@@ -12,7 +12,7 @@ onMounted(() => {
 
 </script>
 <template>
-    <div class="bg-cover bg-center bg-fixed" style="background-image: url('https://images.pexels.com/photos/3944406/pexels-photo-3944406.jpeg');">
+    <div class="bg-cover bg-center bg-fixed" style="background-image: url('https://images.pexels.com/photos/53265/pexels-photo-53265.jpeg');">
         <Header></Header>
         <Hero></Hero>
     </div>

@@ -6,7 +6,7 @@
                     Our Services
                 </h2>
                 <p class="font-light text-gray-500 lg:mb-16 sm:text-xl dark:text-gray-400">
-                    Explore the whole collection of our offered services and choose what best suits you.
+                    Explore the whole collection of our offered services and choose what best suits your needs
                 </p>
             </div>
 
@@ -15,16 +15,15 @@
                 <div class="items-center bg-gray-50 rounded-lg shadow sm:flex dark:bg-gray-800 dark:border-gray-700">
                     <a href="#" class="flex-shrink-0">
                         <img class="w-full sm:w-64 h-64 object-cover rounded-lg sm:rounded-none sm:rounded-l-lg"
-                            src="https://images.pexels.com/photos/326503/pexels-photo-326503.jpeg"
+                            src="https://images.pexels.com/photos/34094491/pexels-photo-34094491.jpeg"
                             alt="service 1" />
                     </a>
                     <div class="p-5">
                         <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                            <a href="#">Custom Website & Web Application Development</a>
+                            <a href="#">Portrait Photography</a>
                         </h3>
                         <p class="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">
-                            Building responsive, user-friendly, and scalable websites or apps tailored to business
-                            needs.
+                            Individual, family, couple, and professional headshots.
                         </p>
                         <a href="#"
                             class="inline-flex items-center px-4 py-2 mt-7 text-sm font-medium text-white bg-gray-600 rounded-full hover:bg-gray-700 whitespace-nowrap">
@@ -42,16 +41,15 @@
                 <div class="items-center bg-gray-50 rounded-lg shadow sm:flex dark:bg-gray-800 dark:border-gray-700">
                     <a href="#" class="flex-shrink-0">
                         <img class="w-full sm:w-64 h-64 object-cover rounded-lg sm:rounded-none sm:rounded-l-lg"
-                            src="https://images.pexels.com/photos/6214450/pexels-photo-6214450.jpeg"
+                            src="https://images.pexels.com/photos/34018647/pexels-photo-34018647.jpeg"
                             alt="service 2" />
                     </a>
                     <div class="p-5">
                         <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                            <a href="#">E-Commerce Solutions</a>
+                            <a href="#">Event Photography</a>
                         </h3>
                         <p class="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">
-                            Developing secure online stores with product management, payment integration, and customer
-                            experience optimization.
+                            Coverage for birthdays, weddings, corporate events, and special occasions.
                         </p>
                         <a href="#"
                             class="inline-flex items-center px-4 py-2 mt-7 text-sm font-medium text-white bg-gray-600 rounded-full hover:bg-gray-700 whitespace-nowrap">
@@ -69,16 +67,15 @@
                 <div class="items-center bg-gray-50 rounded-lg shadow sm:flex dark:bg-gray-800 dark:border-gray-700">
                     <a href="#" class="flex-shrink-0">
                         <img class="w-full sm:w-64 h-64 object-cover rounded-lg sm:rounded-none sm:rounded-l-lg"
-                            src="https://images.unsplash.com/photo-1491951931722-5a446214b4e2?q=80&w=1967&auto=format&fit=crop"
+                            src="https://images.pexels.com/photos/29899578/pexels-photo-29899578.jpeg"
                             alt="service 3" />
                     </a>
                     <div class="p-5">
                         <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                            <a href="#">Digital Marketing & SEO</a>
+                            <a href="#">Product & Branding Photography</a>
                         </h3>
                         <p class="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">
-                            Helping businesses grow online through search engine optimization, social media marketing,
-                            and targeted campaigns.
+                            High-quality shots for businesses, e-commerce, and marketing.
                         </p>
                         <a href="#"
                             class="inline-flex items-center px-4 py-2 mt-7 text-sm font-medium text-white bg-gray-600 rounded-full hover:bg-gray-700 whitespace-nowrap">
@@ -96,16 +93,15 @@
                 <div class="items-center bg-gray-50 rounded-lg shadow sm:flex dark:bg-gray-800 dark:border-gray-700">
                     <a href="#" class="flex-shrink-0">
                         <img class="w-full sm:w-64 h-64 object-cover rounded-lg sm:rounded-none sm:rounded-l-lg"
-                            src="https://images.pexels.com/photos/210881/pexels-photo-210881.jpeg"
+                            src="https://images.pexels.com/photos/15550470/pexels-photo-15550470.jpeg"
                             alt="service 4" />
                     </a>
                     <div class="p-5">
                         <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                            <a href="#">Website Maintenance & Support</a>
+                            <a href="#">Creative / Themed Photoshoots</a>
                         </h3>
                         <span class="text-gray-500 dark:text-gray-400">
-                            Providing ongoing updates, security patches, and performance monitoring to keep sites
-                            running smoothly.
+                            Styled shoots, fashion, maternity, newborn, or seasonal concepts with props and backdrops.
                         </span>
                         <a href="#"
                             class="inline-flex items-center px-4 py-2 mt-7 text-sm font-medium text-white bg-gray-600 rounded-full hover:bg-gray-700 whitespace-nowrap">

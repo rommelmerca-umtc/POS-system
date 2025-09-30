@@ -1,13 +1,13 @@
 <template>
     <section class="bg-gray-50 dark:bg-gray-900" style="
-            background-image: url('https://images.pexels.com/photos/5208873/pexels-photo-5208873.jpeg');
+            background-image: url('https://images.pexels.com/photos/53265/pexels-photo-53265.jpeg');
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
             background-attachment: fixed;">
         <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
             <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-700 dark:text-white">
-                <img class="w-24 h-24" src="../../../../public/merx_black-removed.png" alt="logo">
+                <img class="w-32 h-32" src="../../../../public/lenz_removed.png" alt="logo">
             </a>
             <div
                 class="shadow-2xl shadow-gray-800 border border-gray-100 w-full bg-white rounded-lg dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
