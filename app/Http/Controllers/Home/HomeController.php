@@ -24,10 +24,11 @@ class HomeController extends Controller
 
         // Render the Welcome page for guests
         return Inertia::render('Auth/Login', [
-            'canLogin'       => app('router')->has('login'),
-            'canRegister'    => app('router')->has('register'),
-            'laravelVersion' => Application::VERSION,
-            'phpVersion'     => PHP_VERSION,
+            'canLogin'         => app('router')->has('login'),
+            'canRegister'      => app('router')->has('register'),
+            'canResetPassword' => app('router')->has('password.request'),
+            'laravelVersion'   => Application::VERSION,
+            'phpVersion'       => PHP_VERSION,
         ]);
     }
 }

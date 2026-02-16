@@ -24,7 +24,7 @@
                     </span>
                 </button>
                 <Link :href="route('admin.dashboard.index')" class="flex items-center justify-between mr-4" as="button">
-                <img src="../../../../../public/merx_logo.png" class="mr-3 size-5" alt="Ventrix Logo" />
+                <img src="../../../../../public/lenz_icon.png" class="mr-3 size-5" alt="Ventrix Logo" />
                 <span class="self-center text-2xl font-extrabold whitespace-nowrap dark:text-white">
                     Lenz
                 </span>
