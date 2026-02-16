@@ -3,7 +3,7 @@
         <Navbar />
         <Sidebar />
 
-        <main class="md:ml-64 pt-20 h-full flex flex-col">
+        <main class="md:ml-52 pt-20 h-full flex flex-col">
             <div class="flex-1 overflow-hidden">
                 <div class="h-full overflow-y-auto p-4">
                     <slot />

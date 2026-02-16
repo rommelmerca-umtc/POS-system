@@ -1,14 +1,14 @@
 <template>
     <aside
-        class="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+        class="fixed top-0 left-0 z-40 w-52 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
         aria-label="Sidenav" id="drawer-navigation">
         <div class="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800">
             <ul class="space-y-2">
                 <li>
                     <Link :href="route('admin.dashboard.index')" :class="[
-                        'flex items-center p-2 text-base font-medium rounded-lg transition duration-75 group hover:bg-emerald-400 dark:hover:bg-gray-700',
+                        'flex items-center p-2 text-base font-medium rounded-lg transition duration-2000 group hover:bg-blue-700 hover:text-white transition-all dark:hover:bg-gray-700',
                         route().current('admin.dashboard.index')
-                            ? 'text-white bg-emerald-700 dark:bg-emerald-600'
+                            ? 'text-blue-500 border-blue-200 shadow-xl shadow-blue-500/50'
                             : 'text-gray-900 dark:text-white'
                     ]">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -22,10 +22,10 @@
                 </li>
                 <li>
                     <button type="button"
-                        class="flex items-center p-2 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-emerald-400 dark:hover:bg-gray-700 dark:text-white "
+                        class="flex items-center p-2 w-full text-base font-medium text-gray-900 rounded-lg transition duration-2000 group hover:bg-blue-700 hover:text-white transition-all dark:hover:bg-gray-700 dark:text-white "
                         aria-controls="dropdown-pages" data-collapse-toggle="dropdown-pages">
                         <svg aria-hidden="true"
-                            class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+                            class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-2000 group-hover:text-white dark:text-gray-400 dark:group-hover:text-white"
                             fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd"
                                 d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
@@ -45,9 +45,9 @@
                         <li>
                             <Link :href="route('admin.branches.index')"
                             :class="[
-                                'flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg transition duration-75 group hover:bg-emerald-400 dark:hover:bg-gray-700',
+                                'flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg transition duration-2000 group hover:bg-blue-700 hover:text-white transition-all dark:hover:bg-gray-700',
                                 route().current('admin.branches.index')
-                                    ? 'text-white bg-emerald-700 dark:bg-emerald-600'
+                                    ? 'text-blue-500 border-blue-200 shadow-xl shadow-blue-500/50'
                                     : 'text-gray-900 dark:text-white'
                             ]">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -61,9 +61,9 @@
                         <li>
                             <Link :href="route('admin.sales-reports.index')"
                             :class="[
-                                'flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg transition duration-75 group hover:bg-emerald-400 dark:hover:bg-gray-700',
+                                'flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg transition duration-2000 group hover:bg-blue-700 hover:text-white transition-all dark:hover:bg-gray-700',
                                 route().current('admin.sales-reports.index')
-                                    ? 'text-white bg-emerald-700 dark:bg-emerald-600'
+                                    ? 'text-blue-500 border-blue-200 shadow-xl shadow-blue-500/50'
                                     : 'text-gray-900 dark:text-white'
                             ]">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -76,9 +76,9 @@
                         </li>
                         <li>
                             <Link :href="route('admin.transactions-reports.index')" :class="[
-                                'flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg transition duration-75 group hover:bg-emerald-400 dark:hover:bg-gray-700',
+                                'flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg transition duration-2000 group hover:bg-blue-700 hover:text-white transition-all dark:hover:bg-gray-700',
                                 route().current('admin.transactions-reports.index')
-                                    ? 'text-white bg-emerald-700 dark:bg-emerald-600'
+                                    ? 'text-blue-500 border-blue-200 shadow-xl shadow-blue-500/50'
                                     : 'text-gray-900 dark:text-white'
                             ]">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -95,9 +95,9 @@
             <ul class="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
                 <li>
                     <Link :href="route('admin.statistics.index')" :class="[
-                        'flex items-center p-2 text-base font-medium rounded-lg transition duration-75 group hover:bg-emerald-400 dark:hover:bg-gray-700',
+                        'flex items-center p-2 text-base font-medium rounded-lg transition duration-2000 group hover:bg-blue-700 hover:text-white transition-all dark:hover:bg-gray-700',
                         route().current('admin.statistics.index')
-                            ? 'text-white bg-emerald-700 dark:bg-emerald-600'
+                            ? 'text-blue-500 border-blue-200 shadow-xl shadow-blue-500/50'
                             : 'text-gray-900 dark:text-white'
                     ]">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

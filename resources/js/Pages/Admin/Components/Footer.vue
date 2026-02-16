@@ -1,10 +1,10 @@
 <template>
     <footer
-        class="bg-white rounded-lg shadow sm:flex sm:items-center sm:justify-between p-4 sm:p-6 xl:p-8 dark:bg-gray-800 antialiased">
+        class="bg-white rounded-lg shadow sm:flex sm:items-center sm:justify-between p-2 sm:p-4 xl:p-6 dark:bg-gray-800 antialiased">
         <p class="mb-4 text-sm text-center text-gray-500 dark:text-gray-400 sm:mb-0">
-            &copy; 2025-2026
+            &copy; 2026 - 2027 
             <a href="#" class="hover:underline" target="_blank">
-                Lenz
+                merx
             </a>.
             All rights reserved.
         </p>
