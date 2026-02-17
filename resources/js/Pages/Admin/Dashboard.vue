@@ -19,7 +19,7 @@
                         src="../../../../public/orders_image.jpg" alt="">
                     <div class="flex flex-col justify-between md:p-4 leading-normal">
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-blue-800 dark:text-white">
-                            Orders Management
+                            Orders
                         </h5>
                         <p class="mb-6 text-gray-500 dark:text-gray-400">
                             Create, update, and manage customer orders efficiently.
@@ -50,7 +50,7 @@
                         src="../../../../public/inventory_image.jpg" alt="">
                     <div class="flex flex-col justify-between md:p-4 leading-normal">
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-blue-800 dark:text-white">
-                            Inventory Management
+                            Inventory
                         </h5>
                         <p class="mb-6 text-gray-500 dark:text-gray-400">
                             Track and manage your inventory levels, monitor stock movements.
@@ -81,7 +81,7 @@
                         src="../../../../public/products_image.jpg" alt="">
                     <div class="flex flex-col justify-between md:p-4 leading-normal">
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-blue-800 dark:text-white">
-                            Products Management
+                            Products
                         </h5>
                         <p class="mb-6 text-gray-500 dark:text-gray-400">
                             Manage your product catalog, including adding new products, updating existing ones.
@@ -112,7 +112,7 @@
                         src="../../../../public/products_image.jpg" alt="">
                     <div class="flex flex-col justify-between md:p-4 leading-normal">
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-blue-800 dark:text-white">
-                            Clients Management
+                            Clients
                         </h5>
                         <p class="mb-6 text-gray-500 dark:text-gray-400">
                             Manage your client database, including adding new clients, updating existing ones.
