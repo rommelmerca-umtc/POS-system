@@ -3,8 +3,8 @@
         <div class="flex items-center max-md:flex-col gap-6">
             <form class="max-w-lg w-full p-6 mx-auto" @submit.prevent="submit">
                 <div class="mb-12">
-                    <h1 class="text-blue-900 text-4xl font-bold">Sign In</h1>
-                    <p class="text-slate-600 text-sm mt-6 leading-relaxed">
+                    <h1 class="text-blue-900 text-6xl font-bold">Sign In</h1>
+                    <p class="text-slate-600 text-md mt-6 leading-relaxed">
                         Welcome back! Please log in to access
                         your account.
                     </p>
@@ -16,7 +16,7 @@
                             class="rounded text-white text-[13px] bg-blue-900 absolute px-2 top-[-9px] left-[18px] font-medium">Email</label>
                         <input type="email" name="email" id="email" v-model="form.email" required autofocus
                             placeholder="Enter email"
-                            class="px-4 py-3.5 bg-white w-full text-blue-900 text-sm border-2 border-slate-200 focus:border-blue-600 rounded-md outline-none" />
+                            class="px-4 py-3.5 mb-4 bg-white w-full text-blue-900 text-lg border border-blue-100 shadow-lg shadow-blue-200 focus:border-blue-600 rounded-md outline-none" />
 
                         <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb"
                             class="w-[18px] h-[18px] absolute right-4" viewBox="0 0 682.667 682.667">
@@ -42,7 +42,7 @@
                             class="rounded text-white text-[13px] bg-blue-900 absolute px-2 top-[-9px] left-[18px] font-medium">Password</label>
                         <input :type="showPassword ? 'text' : 'password'" name="password" id="password"
                             placeholder="••••••••" v-model="form.password" required
-                            class="px-4 py-3.5 bg-white w-full text-blue-900 text-sm border-2 border-slate-200 focus:border-blue-600 rounded-md outline-none" />
+                            class="px-4 py-3.5 bg-white w-full text-blue-900 text-lg border border-blue-200 shadow-lg shadow-blue-200 focus:border-blue-600 rounded-md outline-none" />
                         <!-- Show Password Button -->
                         <button type="button" @click="togglePassword"
                             class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm text-gray-400 dark:text-gray-300">
@@ -76,9 +76,9 @@
                     </div>
                 </div>
 
-                <div class="mt-12">
+                <div class="mt-5">
                     <button type="submit" :class="{ 'opacity-25': form.processing }" :disabled="form.processing"
-                        class="transition-all w-full shadow-xl py-2.5 px-4 text-[15px] tracking-wider font-medium rounded-md text-white bg-blue-800 hover:bg-blue-700 focus:outline-none cursor-pointer">
+                        class="transition-all w-full shadow-xl shadow-blue-200 py-2.5 px-4 text-[15px] tracking-wider font-medium rounded-md text-white bg-blue-800 hover:bg-blue-700 focus:outline-none cursor-pointer">
                         Sign in
                     </button>
                 </div>

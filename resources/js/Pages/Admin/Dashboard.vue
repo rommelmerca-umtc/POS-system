@@ -1,9 +1,9 @@
 <template>
     <AdminLayout>
-        <div class="py-4 mx-auto max-w-screen-xl lg:py-5 lg:px-6 ">
+        <div class="py-4 mx-auto max-w-screen-xl lg:py-5 lg:px-6">
             <div class="mx-auto max-w-screen-sm text-center mb-2 lg:mb-2">
-                <h2 class="mb-4 text-6xl text-blue-600 tracking-tight font-extrabold text-gray-900 dark:text-white">
-                    Main Menu
+                <h2 class="mb-4 text-6xl text-blue-600 tracking-tight font-extrabold text-blue-800 dark:text-white">
+                    Dashboard
                 </h2>
                 <p class="font-light text-gray-500 font-extrabold lg:mb-16 sm:text-xl dark:text-gray-400">
                     Please choose your desired transaction from the options below. You can manage orders, products,
