@@ -14,7 +14,12 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->double('srp', 10,2);
+            $table->text('description')->nullable();
+            $table->text('image_url')->nullable();
+            $table->double('default_price', 10,2)->nullable();
+            $table->double('default_width', 10,2)->nullable();
+            $table->double('default_height', 10,2)->nullable();
+            $table->string('default_unit')->nullable();
             $table->timestamps();
         });
     }

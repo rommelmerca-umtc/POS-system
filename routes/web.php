@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\BranchesController as AdminBranchesControlller;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\OrdersController as AdminOrdersController;
 use App\Http\Controllers\Admin\SalesReportsController as AdminSalesReportsController;
 use App\Http\Controllers\Admin\StatisticsController as AdminStatisticsController;
 use App\Http\Controllers\Admin\TransactionsReportsController as AdminTransactionsReportsController;
@@ -21,7 +22,10 @@ Route::middleware(['auth', 'isUser'])->prefix('user')->group(function () {
 
 Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     // Admin Dashboard Routes
-    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard.index');
+    Route::get('/dashboard', [AdminDashboardController::class, 'dashboardPage'])->name('admin.dashboard.index');
+    
+    // Orders Routes
+    Route::get('/orders', [AdminOrdersController::class, 'ordersPage'])->name('admin.orders.index');
 
     // Admin Branches Routes
     Route::get('/branches', [AdminBranchesControlller::class, 'index'])->name('admin.branches.index');
