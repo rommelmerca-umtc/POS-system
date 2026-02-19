@@ -6,14 +6,16 @@
                 <h6 class="text-xl font-extrabold text-blue-900 dark:text-white">
                     Orders
                 </h6>
-                <button type="button" :disabled="isLoading" @click="handleFilters"
+                <Link :href="route('admin.orders.create-order-page')" :disabled="isLoading" @click="handleFilters"
                     class="flex items-center justify-center space-x-2 text-white bg-green-900 hover:shadow-xl transition duration-150 ease-in-out hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-green-600 dark:hover:bg-green-500 focus:outline-none dark:focus:ring-green-800">
                     <span>Add Order</span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-5 h-5 font-extrabold">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25" />
                     </svg>
-                </button>
+
+                </Link>
             </div>
             <div
                 class="shadow-lg shadow-blue-500/20 mt-7 rounded bg-white border border-gray-100 dark:bg-gray-800 relative sm:rounded-lg overflow-hidden">
@@ -205,7 +207,7 @@
                                 </td>
                                 <td class="px-4 py-3">
                                     <a href="#" @click.prevent="openDetailsModal(report)" :disabled="isLoading"
-                                        class="flex items-center justify-center space-x-2 py-1 px-2 text-sm bg-blue-800 rounded-lg text-center text-white hover:shadow-xl transition duration-150 ease-in-out hover:bg-blue-600 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                                        class="flex items-center justify-center space-x-2 py-1 px-2 text-sm bg-blue-800 rounded-lg text-center text-white hover:shadow-xl transition duration-150 ease-in-out hover:bg-blue-600 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white focus:ring-4 focus:ring-blue-300 dark:focus:ring-gray-700 focus:outline-none dark:focus:ring-gray-800">
                                         <span>{{ isLoading ? 'Disabled...' : 'Details' }}</span>
                                     </a>
                                 </td>
@@ -264,7 +266,7 @@
 </template>
 
 <script setup>
-import { router, usePage } from '@inertiajs/vue3';
+import { router, usePage, Link } from '@inertiajs/vue3';
 import { ref, onMounted, reactive, computed, watch } from 'vue';
 
 const props = defineProps({

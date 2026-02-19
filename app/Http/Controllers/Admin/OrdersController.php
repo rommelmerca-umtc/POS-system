@@ -23,4 +23,13 @@ class OrdersController extends Controller
             'orders' => $orders,
         ]);
     }
+
+    public function createOrderPage(Request $request)
+    {
+        $currentUser  = auth()->user();
+
+        return Inertia::render('Admin/Orders/Components/OrderingCreatePage', [
+            'currentUser' => $currentUser,
+        ]);
+    }
 }

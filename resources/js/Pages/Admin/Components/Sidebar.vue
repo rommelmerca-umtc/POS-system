@@ -46,7 +46,7 @@
                             <Link :href="route('admin.orders.index')"
                             :class="[
                                 'flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg duration-2000 group hover:text-blue-500 hover:border-blue-200 hover:shadow-sm hover:shadow-blue-500/50 transition-all dark:hover:bg-gray-700',
-                                route().current('admin.orders.index')
+                                route().current('admin.orders.index') || route().current('admin.orders.create-order-page')
                                     ? 'text-blue-500 border-blue-200 shadow-sm shadow-blue-500/50'
                                     : 'text-gray-900 dark:text-white'
                             ]">
@@ -136,6 +136,7 @@
 
     const isPagesActive =
         route().current('admin.orders.index') ||
+        route().current('admin.orders.create-order-page') ||
         route().current('admin.branches.index') ||
         route().current('admin.sales-reports.index') ||
         route().current('admin.transactions-reports.index');
