@@ -8,22 +8,15 @@
                     <h6 class="text-xl font-extrabold text-blue-900 dark:text-white flex items-center gap-2">
                         <span class="text-gray-400 text-sm flex items-center gap-1">
                             Orders
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke-width="1.5"
-                                stroke="currentColor"
-                                class="h-4 w-4">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="h-4 w-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                             </svg>
                         </span>
 
                         <span>Create Order</span>
                     </h6>
-                    <button id="createProductButton"
-                        type="button" data-drawer-target="drawer-create-product-default"
-                        data-drawer-show="drawer-create-product-default" aria-controls="drawer-create-product-default"
+                    <button type="button" @click="handleCreateOrder"
                         class="flex items-center justify-center space-x-2 text-white bg-blue-900 hover:shadow-xl transition duration-150 ease-in-out hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-500 focus:outline-none dark:focus:ring-blue-800">
                         <span>Create</span>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -34,7 +27,8 @@
                 </div>
 
                 <div class="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
-                    <div class="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl shadow-xl shadow-blue-500/20 rounded-lg border-none">
+                    <div
+                        class="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl shadow-xl shadow-blue-500/20 rounded-lg border-none">
                         <div class="space-y-6">
                             <div
                                 class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 md:p-6">
@@ -117,7 +111,8 @@
                         </div>
                     </div>
 
-                    <div class="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full shadow-xl shadow-blue-500/20 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800 sm:p-6">
+                    <div
+                        class="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full shadow-xl shadow-blue-500/20 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800 sm:p-6">
                         <div
                             class="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6">
                             <p class="text-xl font-semibold text-gray-900 dark:text-white">Order summary</p>
@@ -195,28 +190,27 @@
             </div>
         </div>
     </AdminLayout>
-    <!-- Show Order Create Form -->
-    <CreateOrderForm :visible="createFormVisible" @close="handleClose" />
+    <CreateOrderForm :visible="createFormVisible" @close="handleClose" :products="products" />
 </template>
 <script setup>
-    import { onMounted, ref } from 'vue';
+    import { onMounted, ref, computed } from 'vue';
     import { initFlowbite } from 'flowbite';
     import AdminLayout from '../../Components/AdminLayout.vue';
     import CreateOrderForm from './CreateOrderForm.vue';
+    import { usePage } from '@inertiajs/vue3';
 
     onMounted(() => {
         initFlowbite();
-    });  
+    });
 
     const isLoading         = ref(false);
     const createFormVisible = ref(false);
+    const products          = computed(() => usePage().props.products);
 
     const handleCreateOrder = () => {
         createFormVisible.value = true;
-        console.log('Create Order button clicked');
     };
     const handleClose = () => {
         createFormVisible.value = false;
-        console.log('Create Order form closed');
     };
 </script>

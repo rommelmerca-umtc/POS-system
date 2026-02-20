@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
+use App\Models\Products\Product;
 
 class OrdersController extends Controller
 {
@@ -27,9 +28,11 @@ class OrdersController extends Controller
     public function createOrderPage(Request $request)
     {
         $currentUser  = auth()->user();
+        $products     = Product::all();
 
         return Inertia::render('Admin/Orders/Components/OrderingCreatePage', [
             'currentUser' => $currentUser,
+            'products'    => $products
         ]);
     }
 }
