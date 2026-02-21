@@ -31,8 +31,36 @@ class OrdersController extends Controller
         $products     = Product::all();
 
         return Inertia::render('Admin/Orders/Components/OrderingCreatePage', [
-            'currentUser' => $currentUser,
-            'products'    => $products
+            'currentUser'   => $currentUser,
+            'products'      => $products,
+            'sessionOrders' => session()->get('orders', []),
         ]);
+    }
+
+    public function createOrder(Request $request)
+    {
+        $requestData = $request->validate([
+            'product_id'    => 'required|integer|exists:products,id',
+            'quantity'      => 'required|numeric|min:1',
+            'width'         => 'required|numeric|min:0',
+            'height'        => 'required|numeric|min:0',
+            'unit'          => 'required|string',
+            'rate_per_unit' => 'required|numeric|min:0',
+            'total_price'   => 'required|numeric|min:0',
+        ]);
+
+        $product = Product::findOrFail($requestData['product_id']);
+
+        $orderItem = array_merge($requestData, [
+            'product_name'        => $product->name,
+            'product_image'       => $product->image_url,
+            'product_description' => $product->description,
+        ]);
+
+        $orders   = session()->get('orders', []);
+        $orders[] = $orderItem;
+        session()->put('orders', $orders);
+
+        return back(); 
     }
 }

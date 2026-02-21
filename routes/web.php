@@ -26,6 +26,7 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     // Orders Routes
     Route::get('/orders', [OrdersController::class, 'ordersPage'])->name('admin.orders.index');
     Route::get('/create-order-page', [OrdersController::class, 'createOrderPage'])->name('admin.orders.create-order-page');
+    Route::post('/create-order', [OrdersController::class, 'createOrder'])->name('admin.orders.create-order');
 
     // Admin Branches Routes
     Route::get('/branches', [BranchesController::class, 'index'])->name('admin.branches.index');
