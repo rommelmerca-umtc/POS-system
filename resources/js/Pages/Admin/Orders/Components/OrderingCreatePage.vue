@@ -32,18 +32,16 @@
                                 class="rounded-lg border border-none bg-white p-4 shadow-xl shadow-blue-500/20 dark:border-gray-700 dark:bg-gray-800 md:p-6">
                                 <div class="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
                                     <a href="#" class="shrink-0 md:order-1">
-                                        <img class="h-20 w-20 dark:hidden"
-                                            :src="order.product_image"
+                                        <img class="h-20 w-20 dark:hidden" :src="order.product_image"
                                             alt="product image" />
-                                        <img class="hidden h-20 w-20 dark:block"
-                                            :src="order.product_image"
+                                        <img class="hidden h-20 w-20 dark:block" :src="order.product_image"
                                             alt="product image dark mode" />
                                     </a>
 
                                     <label for="counter-input" class="sr-only">Choose quantity:</label>
                                     <div class="flex items-center justify-between md:order-3 md:justify-end">
                                         <div class="flex items-center">
-                                            <button type="button" id="decrement-button"
+                                            <button @click="decreaseQuantity(order.id)" type="button" id="decrement-button"
                                                 data-input-counter-decrement="counter-input"
                                                 class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
                                                 <svg class="h-2.5 w-2.5 text-gray-900 dark:text-white"
@@ -56,7 +54,7 @@
                                             <input type="text" id="counter-input" data-input-counter
                                                 class="w-10 shrink-0 border-0 bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0 dark:text-white"
                                                 placeholder="" :value="order.quantity" required />
-                                            <button type="button" id="increment-button"
+                                            <button @click="increaseQuantity(order.id)" type="button" id="increment-button"
                                                 data-input-counter-increment="counter-input"
                                                 class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
                                                 <svg class="h-2.5 w-2.5 text-gray-900 dark:text-white"
@@ -68,7 +66,9 @@
                                             </button>
                                         </div>
                                         <div class="text-end md:order-4 md:w-32">
-                                            <p class="text-base font-bold text-blue-800 dark:text-white">₱{{ order.total_price.toFixed(2) }}</p>
+                                            <p class="text-base font-bold text-blue-800 dark:text-white">
+                                                ₱{{ order.total_price.toFixed(2) }}
+                                            </p>
                                         </div>
                                     </div>
 
@@ -78,7 +78,7 @@
                                             {{ order.product_name }}
                                         </p>
                                         <p class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                                            {{ order.product_description }} 
+                                            {{ order.product_description }}
                                         </p>
 
                                         <div class="flex items-center gap-4">
@@ -177,34 +177,63 @@
             </div>
         </div>
     </AdminLayout>
-    <CreateOrderForm :visible="createFormVisible" :products="products" @close="handleClose"
-        @order-added="handleOrderAdded" />
+    <CreateOrderForm :visible="createFormVisible" :products="products" @close="handleClose" @order-added="handleOrderAdded" />
 </template>
 <script setup>
-import { onMounted, ref, computed } from 'vue';
-import { initFlowbite } from 'flowbite';
-import AdminLayout from '../../Components/AdminLayout.vue';
-import CreateOrderForm from './CreateOrderForm.vue';
-import { usePage } from '@inertiajs/vue3';
+    import { onMounted, ref, computed } from 'vue';
+    import { initFlowbite } from 'flowbite';
+    import AdminLayout from '../../Components/AdminLayout.vue';
+    import CreateOrderForm from './CreateOrderForm.vue';
+    import { usePage, router } from '@inertiajs/vue3';
+    
 
-onMounted(() => {
-    initFlowbite();
-});
+    onMounted(() => {
+        initFlowbite();
+    });
 
-const isLoading = ref(false);
-const createFormVisible = ref(false);
-const products = computed(() => usePage().props.products);
-const orders = ref(usePage().props.sessionOrders || []);
+    const isLoading         = ref(false);
+    const createFormVisible = ref(false);
+    const products          = computed(() => usePage().props.products);
+    const orders            = ref(usePage().props.sessionOrders || []);
 
-const handleCreateOrder = () => {
-    createFormVisible.value = true;
-};
+    const handleCreateOrder = () => {
+        createFormVisible.value = true;
+    };
 
-const handleClose = () => {
-    createFormVisible.value = false;
-};
+    const handleClose = () => {
+        createFormVisible.value = false;
+    };
 
-const handleOrderAdded = (order) => {
-    orders.value.push(order);
-};
+    const handleOrderAdded = (order) => {
+        orders.value.push(order);
+    };
+
+    const updateQuantity = (order, newQuantity) => {
+
+        if (newQuantity < 1) return;
+            router.post(route('admin.orders.update', order.id), {
+                quantity: newQuantity,
+        }, {
+            preserveState: true,
+            preserveScroll: true,
+            onSuccess: () => {
+                order.quantity    = newQuantity;
+                order.total_price = order.rate_per_unit * newQuantity;
+            },
+        });
+    };
+
+    const increaseQuantity = (order_id) => {
+        const order = orders.value.find(o => o.id === order_id);
+        if (order) {
+            updateQuantity(order, order.quantity + 1);
+        }
+    };
+
+    const decreaseQuantity = (order_id) => {
+        const order = orders.value.find(o => o.id === order_id);
+        if (order) {
+            updateQuantity(order, order.quantity - 1);
+        }
+    };
 </script>

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 use App\Models\Products\Product;
+use Illuminate\Support\Str;
 
 class OrdersController extends Controller
 {
@@ -52,6 +53,7 @@ class OrdersController extends Controller
         $product = Product::findOrFail($requestData['product_id']);
 
         $orderItem = array_merge($requestData, [
+            'id'                  => (string) Str::uuid(),
             'product_name'        => $product->name,
             'product_image'       => $product->image_url,
             'product_description' => $product->description,
@@ -62,5 +64,26 @@ class OrdersController extends Controller
         session()->put('orders', $orders);
 
         return back(); 
+    }
+
+    public function updateOrder(Request $request, $id)
+    {
+        $request->validate([
+            'quantity' => ['required', 'integer', 'min:1'],
+        ]);
+
+        $orders = session()->get('orders', []);
+
+        foreach ($orders as &$order) {
+
+            if ($order['id'] == $id) {
+                $order['quantity']    = $request->quantity;
+                $unitPrice            = $order['unit_price'] ?? 0;
+                $order['total_price'] = $unitPrice * $request->quantity;
+                break;
+            }
+        }
+        session()->put('orders', $orders);
+        return back();
     }
 }
