@@ -270,27 +270,27 @@
         </div>
     </AdminLayout>
     <CreateOrderForm :visible="createOrderFormVisible" :products="products" @close="handleCloseOrderForm" @order-added="handleOrderAdded" />
-    <CreateClientForm :visible="createClientFormVisible" @close="handleCloseCreateClient" @client-created="handleClientCreated" />
+    <CreateClientForm :visible="createClientFormVisible" @close="handleCloseClientForm" @client-created="handleClientCreated"/>
 </template>
 <script setup>
     import { onMounted, ref, computed } from 'vue';
     import { initFlowbite } from 'flowbite';
     import AdminLayout from '../../Components/AdminLayout.vue';
     import CreateOrderForm from './CreateOrderForm.vue';
-    import CreateClientForm from './CreateClientForm.vue';
     import { usePage, router } from '@inertiajs/vue3';
+    import CreateClientForm from './CreateClientForm.vue'
     
-
     onMounted(() => {
         initFlowbite();
     });
 
     const isLoading               = ref(false);
     const createOrderFormVisible  = ref(false);
-    const createClientFormVisible = ref(false);
     const products                = computed(() => usePage().props.products);
     const orders                  = ref(usePage().props.sessionOrders || []);
     const totalAmount             = computed(() => orders.value.reduce((total, order) => total + order.total_price, 0));
+    const createClientFormVisible = ref(false)
+    const selectedClient          = ref(null)
 
     const handleCreateOrderForm = () => {
         createOrderFormVisible.value = true;
@@ -367,10 +367,14 @@
     };
 
     const handleCreateClientForm = () => {
-        createClientFormVisible.value = true;
-    };
+        createClientFormVisible.value = true
+    }
 
-    const handleCloseCreateClient = () => {
-        createClientFormVisible.value = false;
-    };
+    const handleCloseClientForm = () => {
+        createClientFormVisible.value = false
+    }
+
+    const handleClientCreated = (client) => {
+        selectedClient.value = client
+    }
 </script>
