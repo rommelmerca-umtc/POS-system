@@ -77,13 +77,25 @@ class OrdersController extends Controller
         foreach ($orders as &$order) {
 
             if ($order['id'] == $id) {
-                $order['quantity']    = $request->quantity;
-                $unitPrice            = $order['unit_price'] ?? 0;
-                $order['total_price'] = $unitPrice * $request->quantity;
+
+                $order['quantity'] = $request->quantity;
+                $unitPrice         = $order['rate_per_unit'];
+                $area              = $order['width'] * $order['height'];
+
+                $order['total_price'] = $unitPrice * $area * $request->quantity;
                 break;
             }
         }
+
         session()->put('orders', $orders);
+        return back();
+    }
+
+    public function removeOrder(Request $request, $id)
+    {
+        $orders = session()->get('orders', []);
+        $orders = array_filter($orders, fn($order) => $order['id'] !== $id);
+        session()->put('orders', array_values($orders));
         return back();
     }
 }

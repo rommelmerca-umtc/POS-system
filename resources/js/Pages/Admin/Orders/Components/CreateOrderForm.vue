@@ -271,19 +271,24 @@
                 }
 
                 Swal.fire({
-                    icon: 'success',
-                    title: 'Product added to order successfully',
+                    toast: true,
+                    icon: "success",
+                    position: "top-end",
                     showConfirmButton: false,
-                    timer: 1500
+                    timer: 3000,
+                    title: "Product added to order successfully!",
                 });
 
                 emit('close');
             },
             onError: () => {
                 Swal.fire({
-                    icon: 'error',
-                    title: 'Failed to add product',
-                    timer: 1500
+                    toast: true,
+                    icon: "error",
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    title: "Failed to add product to order!",
                 });
             }
         });

@@ -28,7 +28,7 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     Route::get('/create-order-page', [OrdersController::class, 'createOrderPage'])->name('admin.orders.create-order-page');
     Route::post('/create-order', [OrdersController::class, 'createOrder'])->name('admin.orders.create-order');
     Route::post('/update-order/{order_id}', [OrdersController::class, 'updateOrder'])->name('admin.orders.update');
-    Route::post('/remove-order/{order_id}', [OrdersController::class, 'removeOrder'])->name('admin.orders.remove-order');
+    Route::delete('/remove-order/{order_id}', [OrdersController::class, 'removeOrder'])->name('admin.orders.remove-order');
 
     // Admin Branches Routes
     Route::get('/branches', [BranchesController::class, 'index'])->name('admin.branches.index');
