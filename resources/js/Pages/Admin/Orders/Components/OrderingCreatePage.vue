@@ -162,10 +162,10 @@
                                             </div>
                                         </form>
                                     </div>
-                                    <div
+                                    <div v-if="selectedClient != null"
                                         class="space-y-6 rounded-lg border border-none bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
                                         <ol class="relative ms-3 border-s border-gray-200 dark:border-gray-700">
-                                            <li class="mb-10 ms-6">
+                                            <li class="mb-5 ms-6">
                                                 <span
                                                     class="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-orange-100 ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -179,12 +179,12 @@
                                                     class="mb-0.5 text-base font-semibold text-gray-500 dark:text-white">
                                                     Client ID
                                                 </h4>
-                                                <p class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                                                    
+                                                <p class="text-lg font-bold text-orange-500 dark:text-gray-400">
+                                                    {{ selectedClient?.client_id }}
                                                 </p>
                                             </li>
 
-                                            <li class="mb-10 ms-6">
+                                            <li class="mb-5 ms-6">
                                                 <span
                                                     class="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800">
                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -198,14 +198,14 @@
                                                     class="mb-0.5 text-base font-semibold text-gray-500 dark:text-white">
                                                     Client Name
                                                 </h4>
-                                                <p class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                                                    
+                                                <p class="text-lg font-bold text-blue-500 dark:text-gray-400">
+                                                    {{ selectedClient?.first_name }} {{ selectedClient?.last_name }}
                                                 </p>
                                             </li>
 
-                                            <li class="mb-10 ms-6">
+                                            <li class="mb-5 ms-6">
                                                 <span
-                                                    class="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-green-100 ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800">
+                                                    class="absolute -start-3 flex h- 6 w-6 items-center justify-center rounded-full bg-green-100 ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                         class="size-4 text-green-700">
@@ -217,12 +217,12 @@
                                                     class="mb-0.5 text-base font-semibold text-gray-500 dark:text-white">
                                                     Client Address
                                                 </h4>
-                                                <p class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                                                    
+                                                <p class="text-lg font-bold text-green-500 dark:text-gray-400">
+                                                    {{ selectedClient?.address }}
                                                 </p>
                                             </li>
                                             
-                                            <li class="mb-10 ms-6">
+                                            <li class="mb-5 ms-6">
                                                 <span
                                                     class="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-pink-100 ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -236,12 +236,12 @@
                                                     class="mb-0.5 text-base font-semibold text-gray-500 dark:text-white">
                                                     Client Mobile Number
                                                 </h4>
-                                                <p class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                                                    
+                                                <p class="text-lg font-boldl text-pink-500 dark:text-gray-400">
+                                                    {{ selectedClient?.phone_number }}
                                                 </p>
                                             </li>
                                             
-                                            <li class="mb-10 ms-6">
+                                            <li class="mb-5 ms-6">
                                                 <span
                                                     class="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-purple-100 ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -255,11 +255,26 @@
                                                     class="mb-0.5 text-base font-semibold text-gray-500 dark:text-white">
                                                     Client Email Address
                                                 </h4>
-                                                <p class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                                                    
+                                                <p class="text-lg font-bold text-purple-500 dark:text-gray-400">
+                                                    {{ selectedClient?.email }}
                                                 </p>
                                             </li>
                                         </ol>
+                                    </div>
+                                    <div v-else
+                                        class="space-y-6 rounded-lg border border-none bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                                        <h4
+                                            class="flex items-center gap-2 mb-0.5 font-semibold text-gray-700 bg-yellow-100 rounded p-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor"
+                                                class="w-5 h-5 text-yellow-600 flex-shrink-0">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                                            </svg>
+                                            <span class="text-yellow-600">
+                                                Please search and select a client or create a new client
+                                            </span>
+                                        </h4>
                                     </div>
                                 </div>
                             </div>
@@ -376,5 +391,8 @@
 
     const handleClientCreated = (client) => {
         selectedClient.value = client
+
+        console.log('Client received in parent:', client)
+        console.log(selectedClient.value)
     }
 </script>

@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 use App\Models\Products\Product;
 use Illuminate\Support\Str;
+use App\Models\Clients\Client;
 
 class OrdersController extends Controller
 {
@@ -97,5 +98,26 @@ class OrdersController extends Controller
         $orders = array_filter($orders, fn($order) => $order['id'] !== $id);
         session()->put('orders', array_values($orders));
         return back();
+    }
+
+    public function createClient(Request $request)
+    {
+        $createdClient = Client::create([
+            'client_id'    => 'CL-' . Str::upper(Str::random(6)),
+            'first_name'   => $request->client_firstname,
+            'last_name'    => $request->client_lastname,
+            'email'        => $request->client_email,
+            'phone_number' => $request->client_mobile_number,
+            'address'      => $request->client_address
+        ]);
+
+        return redirect()->back()->with('createdClient', $createdClient);
+    }
+
+    public function share(Request $request): array
+    {
+        return array_merge(parent::share($request), [
+            'createdClient' => fn () => $request->session()->get('createdClient'),
+        ]);
     }
 }

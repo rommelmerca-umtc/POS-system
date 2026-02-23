@@ -17,13 +17,13 @@
                 </button>
             </div>
 
-            <form action="#">
+            <form @submit.prevent="submitClient()">
                 <div class="grid gap-4 mb-4 sm:grid-cols-2">
                     <div>
                         <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             First Name
                         </label>
-                        <input type="text" name="name" id="name"
+                        <input type="text" name="name" id="name" v-model="form.client_firstname"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             placeholder="ex. Juan">
                     </div>
@@ -31,7 +31,7 @@
                         <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             Last Name
                         </label>
-                        <input type="text" name="brand" id="brand" 
+                        <input type="text" name="brand" id="brand" v-model="form.client_lastname"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             placeholder="ex. Dela Cruz">
                     </div>
@@ -39,7 +39,7 @@
                         <label for="mobile" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             Mobile Number
                         </label>
-                        <input type="number" name="mobile" id="mobile"
+                        <input type="number" name="mobile" id="mobile" v-model="form.client_mobile_number"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             placeholder="ex. 09123456789">
                     </div>
@@ -47,7 +47,7 @@
                         <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             Email Address
                         </label>
-                        <input type="email" name="email" id="email" 
+                        <input type="email" name="email" id="email" v-model="form.client_email"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             placeholder="ex. johndoe@example.com">
                     </div>
@@ -56,7 +56,7 @@
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             Address
                         </label>
-                        <textarea id="address" rows="5"
+                        <textarea id="address" rows="5" v-model="form.client_address"
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             placeholder="Write an address...">
                         </textarea>
@@ -83,30 +83,48 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue'
-import { router } from '@inertiajs/vue3'
+    import { reactive } from 'vue'
+    import { router, usePage } from '@inertiajs/vue3'
 
-const props = defineProps({
-    visible: Boolean
-})
+    const page = usePage()
 
-const emit = defineEmits(['close', 'client-created'])
-
-const form = reactive({
-    client_name: '',
-    address: '',
-    mobile_number: '',
-    email: ''
-})
-
-const submitClient = () => {
-    router.post(route('admin.clients.store'), form, {
-        preserveScroll: true,
-        onSuccess: (page) => {
-            emit('client-created', page.props.client)
-            emit('close')
-            Object.keys(form).forEach(key => form[key] = '')
-        }
+    const props = defineProps({
+        visible: Boolean
     })
-}
+
+    const emit = defineEmits(['close', 'client-created'])
+
+    const form = reactive({
+        client_firstname: '',
+        client_lastname: '',
+        client_mobile_number: '',
+        client_email: '',
+        client_address: ''
+    })
+
+    const submitClient = () => {
+        router.post(route('admin.clients.create'), form, {
+            preserveScroll: true,
+            onSuccess: () => {
+                const client = usePage().props.flash.createdClient
+                emit('client-created', client)
+                emit('close')
+
+                Swal.fire({
+                    toast: true,
+                    icon: "success",
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    title: "Client Created Successfully!",
+                });
+
+                form.client_firstname     = ''
+                form.client_lastname      = ''
+                form.client_mobile_number = ''
+                form.client_email         = ''
+                form.client_address       = ''
+            }
+        })
+    }
 </script>
