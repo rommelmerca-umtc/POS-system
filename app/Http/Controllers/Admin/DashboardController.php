@@ -11,17 +11,12 @@ class DashboardController extends Controller
 {
     public function dashboardPage(Request $request)
     {
-        $currentUser = auth()->user();
+        // $currentUser = auth()->user();
 
-        $userBranches         = $this->getUserBranches($currentUser->id);
-        $paidSales            = $this->getSalesData($userBranches);
-        $finishedTransactions = $this->getTransactionData($userBranches);
+        // $userBranches         = $this->getUserBranches($currentUser->id);
+        // $finishedTransactions = $this->getTransactionData($userBranches);
 
-        return Inertia::render('Admin/Dashboard', [
-            'userBranches'         => $userBranches,
-            'paidSales'            => $paidSales,
-            'finishedTransactions' => $finishedTransactions
-        ]);
+        return Inertia::render('Admin/Dashboard');
     }
 
     private function getUserBranches($userId)
@@ -32,16 +27,16 @@ class DashboardController extends Controller
             ->toArray();
     }
 
-    private function getSalesData(array $userBranches)
-    {
-        return DB::table('sales_orders as so')
-            ->select(
-                DB::raw('SUM(CASE WHEN so.status = "PAID" THEN so.grand_total ELSE 0 END) as paid_sales_amount'),
-                DB::raw('COUNT(CASE WHEN so.status = "PAID" THEN 1 ELSE NULL END) as paid_sales_count')
-            )
-            ->whereIn('so.branch_id', $userBranches)
-            ->first();
-    }
+    // private function getSalesData(array $userBranches)
+    // {
+    //     return DB::table('sales_orders as so')
+    //         ->select(
+    //             DB::raw('SUM(CASE WHEN so.status = "PAID" THEN so.grand_total ELSE 0 END) as paid_sales_amount'),
+    //             DB::raw('COUNT(CASE WHEN so.status = "PAID" THEN 1 ELSE NULL END) as paid_sales_count')
+    //         )
+    //         ->whereIn('so.branch_id', $userBranches)
+    //         ->first();
+    // }
 
     private function getTransactionData(array $userBranches)
     {

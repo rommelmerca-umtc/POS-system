@@ -99,21 +99,21 @@ class StatisticsController extends Controller
 
     private function getSalesTotals(array $userBranches, $month = null, $year = null)
     {
-        return DB::table('sales_orders as so')
-            ->leftJoin('branches as b', 'b.id', '=', 'so.branch_id')
-            ->select(
-                'b.name as branch_name',
-                DB::raw('COALESCE(SUM(CASE WHEN so.status = "PAID" THEN so.grand_total ELSE 0 END), 0) as total_paid'),
-                DB::raw('COALESCE(SUM(CASE WHEN so.status = "BILLED" THEN so.grand_total ELSE 0 END), 0) as total_billed'),
-                DB::raw('COALESCE(SUM(CASE WHEN so.status = "VOIDED" THEN so.grand_total ELSE 0 END), 0) as total_voided')
-            )
-            ->whereIn('so.branch_id', $userBranches)
-            ->when($month || $year, function ($query) use ($month, $year) {
-                $query->whereMonth('so.created_at', $month)
-                      ->whereYear('so.created_at', $year);
-            })
-            ->groupBy('b.name', 'so.branch_id')
-            ->get();
+        // return DB::table('sales_orders as so')
+        //     ->leftJoin('branches as b', 'b.id', '=', 'so.branch_id')
+        //     ->select(
+        //         'b.name as branch_name',
+        //         DB::raw('COALESCE(SUM(CASE WHEN so.status = "PAID" THEN so.grand_total ELSE 0 END), 0) as total_paid'),
+        //         DB::raw('COALESCE(SUM(CASE WHEN so.status = "BILLED" THEN so.grand_total ELSE 0 END), 0) as total_billed'),
+        //         DB::raw('COALESCE(SUM(CASE WHEN so.status = "VOIDED" THEN so.grand_total ELSE 0 END), 0) as total_voided')
+        //     )
+        //     ->whereIn('so.branch_id', $userBranches)
+        //     ->when($month || $year, function ($query) use ($month, $year) {
+        //         $query->whereMonth('so.created_at', $month)
+        //               ->whereYear('so.created_at', $year);
+        //     })
+        //     ->groupBy('b.name', 'so.branch_id')
+        //     ->get();
     }
 }
 

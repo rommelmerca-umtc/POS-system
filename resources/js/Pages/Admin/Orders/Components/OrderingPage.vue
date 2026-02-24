@@ -6,7 +6,7 @@
                 <h6 class="text-xl font-extrabold text-blue-900 dark:text-white">
                     Orders
                 </h6>
-                <Link :href="route('admin.orders.create-order-page')" :disabled="isLoading" @click="handleFilters"
+                <Link :href="route('admin.orders.create-order-page')" :disabled="isLoading"
                     class="flex items-center justify-center space-x-2 text-white bg-blue-900 hover:shadow-xl transition duration-150 ease-in-out hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-500 focus:outline-none dark:focus:ring-blue-800">
                     <span>Add Order</span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -44,7 +44,7 @@
                     </div>
                     <!-- filters -->
                     <div
-                        class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+                        class="z-50 w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                         <div class="flex items-center space-x-3 w-full md:w-auto">
                             <button id="filterDropdownButton" data-dropdown-toggle="filterDropdown"
                                 class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
@@ -71,46 +71,48 @@
                                 </h6>
                                 <ul class="space-y-2 text-sm mb-2" aria-labelledby="filterDropdownButton">
                                     <li class="flex items-center">
-                                        <input id="paid" type="checkbox" v-model="selectedStatuses.PAID"
+                                        <input id="pending" type="checkbox" v-model="selectedStatuses.pending"
+                                            :disabled="isLoading"
+                                            class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        <label for="pending"
+                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                                            Pending
+                                        </label>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <input id="paid" type="checkbox" v-model="selectedStatuses.paid"
                                             :disabled="isLoading"
                                             class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                         <label for="paid"
                                             class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                                            PAID
+                                            Paid
                                         </label>
                                     </li>
                                     <li class="flex items-center">
-                                        <input id="billed" type="checkbox" v-model="selectedStatuses.BILLED"
+                                        <input id="cancelled" type="checkbox" v-model="selectedStatuses.cancelled"
                                             :disabled="isLoading"
                                             class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        <label for="billed"
+                                        <label for="cancelled"
                                             class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                                            BILLED
+                                            Cancelled
                                         </label>
                                     </li>
                                     <li class="flex items-center">
-                                        <input id="voided" type="checkbox" v-model="selectedStatuses.VOIDED"
+                                        <input id="overdue" type="checkbox" v-model="selectedStatuses.overdue"
                                             :disabled="isLoading"
                                             class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        <label for="voided"
+                                        <label for="overdue"
                                             class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                                            VOIDED
+                                            Overdue
                                         </label>
                                     </li>
-                                </ul>
-                                <hr class="w-full mb-2">
-                                <!-- filter by branch -->
-                                <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
-                                    Filter by Branch
-                                </h6>
-                                <ul class="space-y-2 text-sm mt-5" aria-labelledby="filterDropdownButton">
-                                    <li class="flex items-center" v-for="branch in branches" :key="branch.id">
-                                        <input type="checkbox" :id="branch.name" :value="branch.id"
-                                            v-model="selectedBranches" :disabled="isLoading"
-                                            class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                        <label :for="branch.name"
+                                    <li class="flex items-center">
+                                        <input id="blacklisted" type="checkbox" v-model="selectedStatuses.blacklisted"
+                                            :disabled="isLoading"
+                                            class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        <label for="blacklisted"
                                             class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-
+                                            Blacklisted
                                         </label>
                                     </li>
                                 </ul>
@@ -182,7 +184,7 @@
                                 </th>
                                 <th scope="row"
                                     class="px-4 py-3 text-md font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    ₱{{ order.grand_total }}
+                                    {{ formatNumber(order.grand_total) }}
                                 </th>
                                 <th scope="row"
                                     class="px-4 py-3 text-md font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -190,23 +192,23 @@
                                 </th>
                                 <td class="px-4 py-3">
                                     <span v-if="order.payment_status === 'pending'"
+                                        class="bg-blue-100 text-blue-800 text-md font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
+                                        title="Paid (Finished Paid)">
+                                        {{ order.payment_status.toUpperCase() }}
+                                    </span>
+                                    <span v-else-if="order.payment_status === 'paid'"
                                         class="bg-green-100 text-green-800 text-md font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
                                         title="Pending (Pending for Payment)">
-                                        {{ order.payment_status }}
-                                    </span>
-                                    <span v-else-if="'BILLED'"
-                                        class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
-                                        title="BILLED (Finished not yet Paid)">
-
+                                        {{ order.payment_status.toUpperCase() }}
                                     </span>
                                     <span v-else-if="'VOIDED'"
-                                        class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300"
+                                        class="bg-red-100 text-red-800 text-md font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300"
                                         title="VOIDED (Paid but Voided)">
 
                                     </span>
                                 </td>
                                 <td class="px-4 py-3">
-                                    <a href="#" @click.prevent="openDetailsModal(report)" :disabled="isLoading"
+                                    <a href="#" @click.prevent="openDetailsModal(order)" :disabled="isLoading"
                                         class="flex items-center justify-center space-x-2 py-1 px-2 text-sm bg-green-800 rounded-lg text-center text-white hover:shadow-xl transition duration-150 ease-in-out hover:bg-green-600 dark:hover:bg-green-600 dark:text-green-200 dark:hover:text-white focus:ring-4 focus:ring-green-300 dark:focus:ring-green-700 focus:outline-none">
                                         <span>{{ isLoading ? 'Disabled...' : 'Details' }}</span>
                                     </a>
@@ -216,7 +218,6 @@
                                 <td class="px-4 py-3"></td>
 
                                 <td colspan="2" class="px-4 py-3 text-gray-900 dark:text-white text-right">
-                                    Totals
                                 </td>
 
                                 <td class="px-4 py-3 text-gray-900 dark:text-white">
@@ -238,15 +239,15 @@
                     <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
                         Showing
                         <span class="font-semibold text-gray-900 dark:text-white">
-
+                            {{ orders.from || 0 }}-{{ orders.to || 0 }}
                         </span>
                         of
                         <span class="font-semibold text-gray-900 dark:text-white">
-
+                            {{ orders.total || 0 }}
                         </span>
                     </span>
-                    <!-- <ul class="inline-flex items-stretch -space-x-px">
-                        <li class="flex">
+                    <ul class="inline-flex items-stretch -space-x-px">
+                        <li v-for="link in orders.links" :key="link.label" class="flex">
                             <button
                                 :disabled="!link.url"
                                 @click="fetchPage(link.url ? getPageFromUrl(link.url) : null)"
@@ -258,16 +259,27 @@
                                 <span v-html="link.label"></span>
                             </button>
                         </li>
-                    </ul> -->
+                    </ul>
                 </nav>
             </div>
         </div>
+
+        <OrderDetails
+            :detailsDialogVisible="detailsDialogVisible"
+            :orderDetails="orderDetails"
+            :orderItems="orderItems"
+            @update:detailsDialogVisible="(value) => detailsDialogVisible = value"
+            @close="handleCloseDetailsDialog">
+        </OrderDetails>
     </section>
 </template>
 
 <script setup>
     import { router, usePage, Link } from '@inertiajs/vue3';
     import { ref, onMounted, reactive, computed, watch } from 'vue';
+    import { initFlowbite } from 'flowbite';
+    import OrderDetails from './OrderDetails.vue';
+    import axios from 'axios';
 
     const props = defineProps({
         orders: {
@@ -277,6 +289,7 @@
     });
 
     onMounted(() => {
+        initFlowbite();
         const currentRoute   = usePage().url;
         const hasQueryParams = currentRoute.includes('?');
 
@@ -290,46 +303,229 @@
         }
     });
   
-    const startDate        = ref('');
-    const endDate          = ref('');
-    const isLoading        = ref(false);
-    const searchQuery      = ref('');
-    const dialogVisible    = ref(false);
-    const reportDetails    = ref([]);
-    const selectedStatuses = ref({
-        PAID: false,
-        BILLED: false,
-        VOIDED: false,
-    });
+    const startDate            = ref('');
+    const endDate              = ref('');
+    const isLoading            = ref(false);
+    const searchQuery          = ref('');
+    const detailsDialogVisible = ref(false);
+    const orderDetails         = ref({});
+    const orderItems           = ref([]);
+    const selectedStatuses     = ref({
+                                    pending: false,
+                                    paid: false,
+                                    cancelled: false,
+                                    overdue: false,
+                                    blacklisted: false
+                                });
+    
+    const handleSearch = () => {
+        if (isLoading.value) return;
 
-    // const fetchPage = (page) => {
-    //     const activeStatuses = Object.keys(selectedStatuses.value).filter(status => selectedStatuses.value[status]);
+        isLoading.value      = true;
+        const activeStatuses = Object.keys(selectedStatuses.value).filter(status => selectedStatuses.value[status]);
 
-    //     if (!page) return;
-    //     router.visit(route('admin.sales-reports.index'), {
-    //         method: 'get',
-    //         data: {
-    //             page,
-    //             branch_ids: selectedBranches.value.length > 0 ? selectedBranches.value : null,
-    //             sales_status: activeStatuses.length > 0 ? activeStatuses : null,
-    //             start_date: startDate.value || null,
-    //             end_date: endDate.value || null,
-    //             search: searchQuery.value || '',
-    //         },
-    //         preserveState: true,
-    //         replace: true
-    //     });
-    // };
+        if (searchQuery.value == '') {
+            isLoading.value = false;
+            Swal.fire({
+                toast: true,
+                icon: "warning",
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                title: "Please input your prompt on the search box first.",
+            });
+            return;
+        }
 
-    // const openDetailsModal = (report) => {
-    //     dialogVisible.value = true;
-    //     isLoading.value     = true;
-    //     reportDetails.value = report;
-    // };
+        router.visit(route('admin.orders.index'), {
+            method: 'get',
+            data: {
+                payment_status: activeStatuses.length > 0 ? activeStatuses : null,
+                start_date: startDate.value || null,
+                end_date: endDate.value || null,
+                search: searchQuery.value,
+            },
+            preserveState: true,
+            replace: true,
+            onSuccess: () => {
+                isLoading.value = false;
+            },
+            onFinish: () => {
+                isLoading.value = false;
+            },
+        });
+    };
 
-    // const handleClose = async () => {
-    //     dialogVisible.value  = false;
-    //     isLoading.value      = false;
-    //     reportDetails        = [];
-    // };
+    const handleFilters = () => {
+        if (isLoading.value) return;
+
+        isLoading.value      = true;
+        const activeStatuses = Object.keys(selectedStatuses.value).filter(status => selectedStatuses.value[status]);
+        console.log(activeStatuses)
+
+        if (activeStatuses.length < 1 && startDate.value == '' && endDate.value == '') {
+            isLoading.value = false;
+            Swal.fire({
+                toast: true,
+                icon: "warning",
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                title: "Please select a filter first",
+            });
+            return;
+        }
+
+        if ((startDate.value && !endDate.value) || (!startDate.value && endDate.value)) {
+            isLoading.value = false;
+            Swal.fire({
+                toast: true,
+                icon: "warning",
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                title: "Please fill both Start Date and End Date.",
+            });
+            return;
+        }
+
+        if (startDate.value && endDate.value) {
+            const start      = new Date(startDate.value);
+            const end        = new Date(endDate.value);
+            const diffInDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+
+            if (diffInDays > 31) {
+                isLoading.value = false;
+                Swal.fire({
+                    toast: true,
+                    icon: "warning",
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    title: "Date range should not exceed 31 days.",
+                });
+                return;
+            }
+        }
+
+        router.visit(route('admin.orders.index'), {
+            method: 'get',
+            data: {
+                payment_status: activeStatuses.length > 0 ? activeStatuses : null,
+                start_date: startDate.value || null,
+                end_date: endDate.value || null,
+                search: searchQuery.value || '',
+            },
+            preserveState: true,
+            replace: true,
+            onSuccess: () => {
+                isLoading.value = false;
+            },
+            onFinish: () => {
+                isLoading.value = false;
+            },
+        });
+    };
+
+    function refresh() {
+        if (isLoading.value) return;
+
+        isLoading.value        = true;
+        selectedStatuses.value = { 
+                                    pending: false,
+                                    paid: false,
+                                    cancelled: false,
+                                    overdue: false,
+                                    blacklisted: false
+                                };
+        startDate.value        = '';
+        endDate.value          = '';
+        searchQuery.value      = '';
+
+        router.visit(route('admin.orders.index'), {
+            method: 'get',
+            data: {
+            },
+            preserveState: true,
+            replace: true,
+            onSuccess: () => {
+                isLoading.value = false;
+                Swal.fire({
+                    toast: true,
+                    icon: "success",
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    title: "Data refreshed!",
+                });
+            },
+            onFinish: () => {
+                isLoading.value = false;
+            },
+        });
+    }
+
+    function formatNumber(value) {
+        if (value === null || value === undefined || isNaN(value)) {
+            return '₱0.00';
+        }
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'PHP',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        }).format(value);
+    };
+
+    const fetchPage = (page) => {
+        const activeStatuses = Object.keys(selectedStatuses.value).filter(status => selectedStatuses.value[status]);
+
+        if (!page) return;
+        router.visit(route('admin.orders.index'), {
+            method: 'get',
+            data: {
+                page,
+                payment_status: activeStatuses.length > 0 ? activeStatuses : null,
+                start_date: startDate.value || null,
+                end_date: endDate.value || null,
+                search: searchQuery.value || '',
+            },
+            preserveState: true,
+            replace: true
+        });
+    };
+
+    const getPageFromUrl = (url) => {
+        try {
+            const parsedUrl = new window.URL(url);
+            return parsedUrl.searchParams.get('page');
+        } catch (error) {
+            console.error('Invalid URL:', url);
+            return null;
+        }
+    };
+
+    const openDetailsModal = async (order) => {
+        detailsDialogVisible.value = true;
+        isLoading.value            = true;
+
+        try {
+            const response     = await axios.get(route('admin.orders.details', order.id));
+            orderDetails.value = response.data.order;
+            orderItems.value   = response.data.items;
+            console.log(orderDetails);
+            console.log(orderItems);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            isLoading.value = false;
+        }
+    };
+
+    const handleCloseDetailsDialog = async () => {
+        detailsDialogVisible.value = false;
+        isLoading.value            = false;
+        orderDetails.value         = {};
+        orderItems.value           = [];
+    };
 </script>

@@ -89,23 +89,23 @@ class BranchesController extends Controller
     {
         $request->validate(['branch_id' => 'required|integer']);
 
-        $salesOrders = DB::table('sales_orders as so')
-            ->leftJoin('branches as br', 'br.id', '=', 'so.branch_id')
-            ->selectRaw('
-                br.name as branch_name,
-                br.id as branch_id,
-                SUM(CASE WHEN so.status = "BILLED" THEN 1 ELSE 0 END) as billed_sales_count,
-                SUM(CASE WHEN so.status = "BILLED" THEN so.grand_total ELSE 0 END) as billed_sales_amount,
-                SUM(CASE WHEN so.status = "PAID" THEN 1 ELSE 0 END) as paid_sales_count,
-                SUM(CASE WHEN so.status = "PAID" THEN so.grand_total ELSE 0 END) as paid_sales_amount,
-                SUM(CASE WHEN so.status = "VOIDED" THEN 1 ELSE 0 END) as voided_sales_count,
-                SUM(CASE WHEN so.status = "VOIDED" THEN so.grand_total ELSE 0 END) as voided_sales_amount'
-            )
-            ->where('so.branch_id', $request->branch_id)
-            ->groupBy('br.id', 'br.name')
-            ->get();
+        // $salesOrders = DB::table('sales_orders as so')
+        //     ->leftJoin('branches as br', 'br.id', '=', 'so.branch_id')
+        //     ->selectRaw('
+        //         br.name as branch_name,
+        //         br.id as branch_id,
+        //         SUM(CASE WHEN so.status = "BILLED" THEN 1 ELSE 0 END) as billed_sales_count,
+        //         SUM(CASE WHEN so.status = "BILLED" THEN so.grand_total ELSE 0 END) as billed_sales_amount,
+        //         SUM(CASE WHEN so.status = "PAID" THEN 1 ELSE 0 END) as paid_sales_count,
+        //         SUM(CASE WHEN so.status = "PAID" THEN so.grand_total ELSE 0 END) as paid_sales_amount,
+        //         SUM(CASE WHEN so.status = "VOIDED" THEN 1 ELSE 0 END) as voided_sales_count,
+        //         SUM(CASE WHEN so.status = "VOIDED" THEN so.grand_total ELSE 0 END) as voided_sales_amount'
+        //     )
+        //     ->where('so.branch_id', $request->branch_id)
+        //     ->groupBy('br.id', 'br.name')
+        //     ->get();
 
-        return response()->json(['salesOrders' => $salesOrders]);
+        // return response()->json(['salesOrders' => $salesOrders]);
     }
 
     public function statistics(Request $request)

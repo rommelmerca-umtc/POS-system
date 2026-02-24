@@ -12,13 +12,10 @@ use App\Models\Clients\Client;
 
 class OrdersController extends Controller
 {
-
     public function ordersPage(Request $request)
     {
-        $currentUser  = auth()->user();
-
-        $orders = DB::table('orders as o')
-                    ->join('clients as c', 'o.client_id', '=', 'c.client_id')
+        $ordersQuery = DB::table('orders as o')
+                    ->leftJoin('clients as c', 'o.client_id', '=', 'c.client_id')
                     ->select(
                         'o.id', 
                         'o.client_id', 
@@ -28,9 +25,33 @@ class OrdersController extends Controller
                         'o.payment_due', 
                         'o.status', 
                         'o.created_at',
-                        DB::raw("CONCAT(c.first_name, ' ', c.last_name) as client_name")
+                        DB::raw("CONCAT(c.first_name, ' ', c.last_name) as client_name"),
+                        'c.client_id',
+                        'c.email'
                     )
-                    ->paginate(10);
+                    ->when($request->payment_status, function ($query) use ($request) {
+                        $query->whereIn('o.payment_status', $request->get('payment_status'));
+                    })
+                    ->when($request->start_date && $request->end_date, function ($query) use ($request) {
+                        $query->whereBetween('o.created_at', [
+                            $request->get('start_date'),
+                            $request->get('end_date'),
+                        ]);
+                    })
+                    ->when($request->search, function ($query) use ($request) {
+                        $search = $request->search;
+                        $query->where(function ($q) use ($search) {
+                            $q->where('c.first_name', 'like', "%$search%")
+                            ->orWhere('c.last_name', 'like', "%$search%")
+                            ->orWhere('c.client_id', 'like', "%$search%")
+                            ->orWhere('c.email', 'like', "%$search%")
+                            ->orWhere('o.payment_status', 'like', "%$search%")
+                            ->orWhereRaw("DATE_FORMAT(o.created_at, '%M %d, %Y') like ?", ["%$search%"]);
+                        });
+                    })
+                    ->orderBy('o.id', 'ASC');
+
+        $orders = $ordersQuery->paginate(10);
 
         return Inertia::render('Admin/Orders/OrdersIndex', [
             'orders' => $orders,
@@ -206,5 +227,45 @@ class OrdersController extends Controller
             DB::rollBack();
             dd($e->getMessage()); 
         }
+    }
+
+    public function getOrderDetails($orderId)
+    {
+        $order = DB::table('orders as o')
+            ->leftJoin('clients as c', 'o.client_id', '=', 'c.client_id')
+            ->select(
+                'o.id',
+                'o.client_id',
+                'o.grand_total',
+                'o.payment_method',
+                'o.payment_status',
+                'o.payment_due',
+                'o.status',
+                'o.created_at',
+                DB::raw("CONCAT(c.first_name, ' ', c.last_name) as client_name"),
+                'c.email',
+            )
+            ->where('o.id', $orderId)
+            ->first();
+
+        $orderItems = DB::table('order_items as oi')
+            ->leftJoin('products as p', 'oi.product_id', '=', 'p.id')
+            ->select(
+                'oi.id',
+                'oi.product_id',
+                'p.name',
+                'oi.quantity',
+                'oi.rate_per_unit',
+                'oi.width',
+                'oi.height',
+                'oi.total_price'
+            )
+            ->where('oi.sales_order_id', $orderId)
+            ->get();
+
+        return response()->json([
+            'order' => $order,
+            'items' => $orderItems
+        ]);
     }
 }

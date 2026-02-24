@@ -28,7 +28,7 @@
 
                 <div class="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
                     <div class="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-2xl">
-                        <div class="space-y-6">
+                        <div class="space-y-6" v-if="orders.length > 0">
                             <div v-for="(order, index) in orders" :key="index"
                                 class="rounded-lg border border-blue-200 bg-white p-4 shadow-xl shadow-blue-500/20 dark:border-gray-700 dark:bg-gray-800 md:p-6">
                                 <div class="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
@@ -96,6 +96,19 @@
                                             </button>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class="mt-6 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-11 items-center p-20">
+                            <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
+                                <div class="mr-auto place-self-center lg:col-span-7">
+                                    <h1
+                                        class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white text-blue-800">
+                                        No Items yet.
+                                    </h1>
+                                    <p class="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
+                                        Please add an order item using the Create order button.
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -264,7 +277,7 @@
                                     <div v-else
                                         class="space-y-6 rounded-lg border border-none bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
                                         <h4
-                                            class="flex items-center gap-2 mb-0.5 font-semibold text-gray-700 bg-yellow-100 rounded p-2">
+                                            class="flex justify-center items-center gap-2 mb-0.5 font-semibold text-gray-700 bg-yellow-100 rounded p-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor"
                                                 class="w-5 h-5 text-yellow-600 flex-shrink-0">

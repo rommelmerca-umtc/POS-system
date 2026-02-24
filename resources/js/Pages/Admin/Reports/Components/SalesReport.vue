@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
         <div
             class="rounded-lg flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4 bg-white border border-gray-100 shadow-sm">
@@ -13,7 +13,6 @@
             <div class="rounded bg-white border border-gray-100 shadow-sm dark:bg-gray-800 relative sm:rounded-lg overflow-hidden">
                 <div
                     class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-                    <!-- search -->
                     <div class="w-full md:w-1/2">
                         <form class="flex items-center" @submit.prevent="handleSearch" :disabled="isLoading">
                             <label for="simple-search" class="sr-only">
@@ -35,7 +34,6 @@
                             </div>
                         </form>
                     </div>
-                    <!-- filters -->
                     <div
                         class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                         <div class="flex items-center space-x-3 w-full md:w-auto">
@@ -58,7 +56,6 @@
                             <div id="filterDropdown"
                                 class="z-10 hidden w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700"
                                 style="max-height: 200px; overflow-y: auto;">
-                                <!-- filter by status -->
                                 <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
                                     Filter by Status
                                 </h6>
@@ -86,7 +83,6 @@
                                     </li>
                                 </ul>
                                 <hr class="w-full mb-2">
-                                <!-- filter by branch -->
                                 <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
                                     Filter by Branch
                                 </h6>
@@ -128,7 +124,6 @@
                             />
                         </div>
                     </div>
-                    <!-- buttons -->
                     <div
                         class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                         <button type="button" :disabled="isLoading" @click="handleFilters"
@@ -148,7 +143,6 @@
                     </div>
                 </div>
 
-                <!-- table -->
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 text-center">
@@ -238,7 +232,6 @@
                     </table>
                 </div>
 
-                <!-- pagination -->
                 <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
                     aria-label="Table navigation">
                     <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
@@ -269,7 +262,6 @@
             </div>
         </div>
 
-        <!-- Show Details -->
         <SalesReportsDetails
             :dialogVisible="dialogVisible"
             :reportDetails="reportDetails"
@@ -278,7 +270,6 @@
         </SalesReportsDetails>
     </section>
 </template>
-
 <script setup>
     import { router, usePage } from '@inertiajs/vue3';
     import { ref, onMounted, reactive, computed, watch } from 'vue';
@@ -526,4 +517,4 @@
         isLoading.value      = false;
         reportDetails        = [];
     };
-</script>
+</script> -->
