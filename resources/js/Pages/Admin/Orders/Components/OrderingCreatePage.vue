@@ -27,7 +27,7 @@
                 </div>
 
                 <div class="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
-                    <div class="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
+                    <div class="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-2xl">
                         <div class="space-y-6">
                             <div v-for="(order, index) in orders" :key="index"
                                 class="rounded-lg border border-blue-200 bg-white p-4 shadow-xl shadow-blue-500/20 dark:border-gray-700 dark:bg-gray-800 md:p-6">
@@ -101,7 +101,7 @@
                         </div>
                     </div>
 
-                    <div class="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full shadow-lg shadow-blue-500/20 rounded-lg border border-blue-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800 sm:p-6 lg:p-8">
+                    <div class="mx-auto mt-6 max-w-5xl flex-1 space-y-6 lg:mt-0 lg:w-full shadow-lg shadow-blue-500/20 rounded-lg border border-blue-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800 sm:p-6 lg:p-8">
                         <div
                             class="space-y-4 rounded-lg border border-blue-200 bg-white p-4 shadow-lg shadow-blue-500/20 dark:border-gray-700 dark:bg-gray-800 sm:p-6">
                             <p class="text-xl font-semibold text-gray-900 dark:text-white">
@@ -157,7 +157,7 @@
                                                     </svg>
                                                 </div>
                                                 <input type="text" id="simple-search" v-model="searchQuery"
-                                                    class="bg-gray-100 border-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    class="bg-gray-100 border-none text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                     placeholder="Search" />
                                             </div>
                                         </form>
@@ -276,7 +276,81 @@
                                             </span>
                                         </h4>
                                     </div>
+                                    <div class="w-full md:w-full">
+                                        <h3 class="mb-4 mt-4 text-xl font-extrabold text-gray-900">
+                                            Choose Payment Method:
+                                        </h3>
+                                        <div class="grid gap-4 mb-4 sm:grid-cols-4">
+                                            <div class="flex items-center ps-4 border border-default rounded-base mb-2 rounded-xl transition-all duration-200 hover:shadow-xl hover:shadow-blue-200">
+                                                <input id="cash-radio" type="radio" value="cash" name="payment-radio" v-model="selectedPayment"
+                                                    class="w-4 h-4 text-neutral-primary border-default-medium bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border border-default appearance-none">
+                                                <label for="cash-radio"
+                                                    class="w-full py-4 select-none ms-2 text-md font-medium text-heading">
+                                                    Cash
+                                                </label>
+                                            </div>
+                                            <div class="flex items-center ps-4 border border-default rounded-base mb-2 rounded-xl transition-all duration-200 hover:shadow-xl hover:shadow-blue-200">
+                                                <input id="gcash-radio" type="radio" value="gcash" name="payment-radio" v-model="selectedPayment"
+                                                    class="w-4 h-4 text-neutral-primary border-default-medium bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border border-default appearance-none">
+                                                <label for="gcash-radio"
+                                                    class="w-full py-4 select-none ms-2 text-md font-medium text-heading">
+                                                    GCash
+                                                </label>
+                                            </div>
+                                            <div class="flex items-center ps-4 border border-default rounded-base mb-2 rounded-xl transition-all duration-200 hover:shadow-xl hover:shadow-blue-200">
+                                                <input id="qrph-radio" type="radio" value="qrph" name="payment-radio" v-model="selectedPayment"
+                                                    class="w-4 h-4 text-neutral-primary border-default-medium bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-1 focus:outline-none focus:ring-blue-900 border border-default appearance-none">
+                                                <label for="qrph-radio"
+                                                    class="w-full py-4 select-none ms-2 text-md font-medium text-heading">
+                                                    QR PH
+                                                </label>
+                                            </div>
+                                            <div class="flex items-center ps-4 border border-default rounded-base mb-2 rounded-xl transition-all duration-200 hover:shadow-xl hover:shadow-blue-200">
+                                                <input id="credit-radio" type="radio" value="credit_card" name="payment-radio" v-model="selectedPayment"
+                                                    class="w-4 h-4 text-neutral-primary border-default-medium bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border border-default appearance-none">
+                                                <label for="credit-radio"
+                                                    class="w-full py-4 select-none ms-2 text-md font-medium text-heading">
+                                                    Credit Card
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 justify-between">
+                                        <div class="flex justify-center ps-4 p-4 border border-default rounded-base mb-2 rounded-xl transition-all duration-200 hover:shadow-xl hover:shadow-blue-200">
+                                            <label for="paymentDue" class="text-lg font-medium text-gray-900 dark:text-gray-100 mr-5">
+                                                Due on:
+                                            </label>
+                                            <input
+                                                type="date"
+                                                id="paymentDue"
+                                                v-model="paymentDue"
+                                                :disabled="isLoading"
+                                                class="py-2 px-4 text-lg font-medium text-gray-900 bg-white rounded-lg border border-gray-200 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600"
+                                            />
+                                        </div>
+                                        <div class="flex justify-center ps-4 p-4 border border-default rounded-base mb-2 rounded-xl transition-all duration-200 hover:shadow-xl hover:shadow-blue-200">
+                                            <label for="paymentStatus" class="text-lg font-medium text-gray-900 dark:text-gray-100 mr-5">
+                                                   Status:
+                                            </label>
+                                            <select id="paymentStatus" v-model="paymentStatus"
+                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                <option :value="null">Select status</option>
+                                                <option value="pending">Pending</option>
+                                                <option value="paid">Paid</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>
+                            <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                                <button @click="cancelOrder()" type="submit" 
+                                    class="transition-all duration-200 shadow-lg shadow-red-200 flex w-full items-center justify-center rounded-lg bg-red-900 px-5 py-2.5 text-lg font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                    Cancel Order
+                                </button>
+                                <button @click="confirmOrder()" type="submit" 
+                                    class="transition-all duration-200 shadow-lg shadow-blue-200 flex w-full items-center justify-center rounded-lg bg-blue-900 px-5 py-2.5 text-lg font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    Confirm Order
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -302,10 +376,15 @@
     const isLoading               = ref(false);
     const createOrderFormVisible  = ref(false);
     const products                = computed(() => usePage().props.products);
+    const searchedClient          = computed(() => usePage().props.searchedClient);
     const orders                  = ref(usePage().props.sessionOrders || []);
     const totalAmount             = computed(() => orders.value.reduce((total, order) => total + order.total_price, 0));
     const createClientFormVisible = ref(false)
     const selectedClient          = ref(null)
+    const searchQuery             = ref('')
+    const selectedPayment         = ref('')
+    const paymentDue              = ref('')
+    const paymentStatus           = ref('')
 
     const handleCreateOrderForm = () => {
         createOrderFormVisible.value = true;
@@ -394,5 +473,104 @@
 
         console.log('Client received in parent:', client)
         console.log(selectedClient.value)
+    }
+
+    const handleSearch = () => {
+        if (isLoading.value) return;
+
+        isLoading.value = true;
+
+        if (searchQuery.value == '') {
+            isLoading.value = false;
+            Swal.fire({
+                toast: true,
+                icon: "warning",
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                title: "Please input your prompt on the search box first.",
+            });
+            return;
+        }
+
+        router.visit(route('admin.orders.search-client'), {
+            method: 'get',
+            data: { search: searchQuery.value },
+            preserveState: true,
+            replace: true,
+            onSuccess: () => {
+                isLoading.value = false;
+                console.log
+                selectedClient.value = searchedClient.value
+            },
+            onFinish: () => {
+                isLoading.value = false;
+            },
+        });
+    }
+
+    function confirmOrder() {
+        if (!selectedClient.value) {
+            Swal.fire({
+                icon: "warning",
+                title: "Please select a client first."
+            });
+            return;
+        }
+
+        if (!selectedPayment.value) {
+            Swal.fire({
+                icon: "warning",
+                title: "Please select a payment method."
+            });
+            return;
+        }
+
+        if (!paymentStatus.value) {
+            Swal.fire({
+                icon: "warning",
+                title: "Please select payment status."
+            });
+            return;
+        }
+
+        isLoading.value = true;
+
+        router.post(route('admin.orders.confirm-order'), {
+            client_id: selectedClient.value.client_id,
+            payment_method: selectedPayment.value,
+            payment_due: paymentDue.value,
+            payment_status: paymentStatus.value
+        }, {
+            preserveScroll: true,
+            onSuccess: () => {
+                Swal.fire({
+                    toast: true,
+                    icon: "success",
+                    position: "top-center",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    title: "Order created successfully!",
+                });
+
+                orders.value          = [];
+                selectedClient.value  = null;
+                selectedPayment.value = '';
+                paymentDue.value      = '';
+                paymentStatus.value   = '';
+
+                router.visit(route('admin.orders.index'));
+            },
+            onError: () => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Failed to create order"
+                });
+            },
+
+            onFinish: () => {
+                isLoading.value = false;
+            }
+        });
     }
 </script>

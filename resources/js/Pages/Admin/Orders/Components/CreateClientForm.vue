@@ -103,7 +103,7 @@
     })
 
     const submitClient = () => {
-        router.post(route('admin.clients.create'), form, {
+        router.post(route('admin.orders.client-create'), form, {
             preserveScroll: true,
             onSuccess: () => {
                 const client = usePage().props.flash.createdClient

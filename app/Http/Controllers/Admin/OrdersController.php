@@ -17,10 +17,20 @@ class OrdersController extends Controller
     {
         $currentUser  = auth()->user();
 
-        $orders = DB::table('sales_orders as so')
-                        ->join('branches as b', 'so.branch_id', '=', 'b.id')
-                        ->select('so.id', 'so.grand_total', 'so.status', 'b.name as branch_name')
-                        ->paginate(10);
+        $orders = DB::table('orders as o')
+                    ->join('clients as c', 'o.client_id', '=', 'c.client_id')
+                    ->select(
+                        'o.id', 
+                        'o.client_id', 
+                        'o.grand_total', 
+                        'o.payment_method',
+                        'o.payment_status', 
+                        'o.payment_due', 
+                        'o.status', 
+                        'o.created_at',
+                        DB::raw("CONCAT(c.first_name, ' ', c.last_name) as client_name")
+                    )
+                    ->paginate(10);
 
         return Inertia::render('Admin/Orders/OrdersIndex', [
             'orders' => $orders,
@@ -33,9 +43,10 @@ class OrdersController extends Controller
         $products     = Product::all();
 
         return Inertia::render('Admin/Orders/Components/OrderingCreatePage', [
-            'currentUser'   => $currentUser,
-            'products'      => $products,
-            'sessionOrders' => session()->get('orders', []),
+            'currentUser'    => $currentUser,
+            'products'       => $products,
+            'sessionOrders'  => session()->get('orders', []),
+            'searchedClient' => session('searchedClient')
         ]);
     }
 
@@ -119,5 +130,81 @@ class OrdersController extends Controller
         return array_merge(parent::share($request), [
             'createdClient' => fn () => $request->session()->get('createdClient'),
         ]);
+    }
+
+    public function searchClient(Request $request) 
+    {
+        $searchedClient = DB::table('clients as c')
+                        ->select([
+                            'c.client_id',
+                            'c.first_name',
+                            'c.last_name',
+                            'c.email',
+                            'c.phone_number',
+                            'c.address',
+                        ])->when($request->search, function ($query) use ($request) {
+                            $search = $request->search;
+                            $query->where(function ($q) use ($search) {
+                                $q->where('c.client_id', 'like', "%$search%")
+                                ->orWhere('c.first_name', 'like', "%$search%")
+                                ->orWhere('c.last_name', 'like', "%$search%")
+                                ->orWhere('c.email', 'like', "%$search%")
+                                ->orWhere('c.phone_number', 'like', "%$search%")
+                                ->orWhere('c.address', 'like', "%$search%");
+                            });
+                        })
+                        ->first();
+
+        return redirect()->back()->with([
+            'searchedClient' => $searchedClient
+        ]);
+    }
+
+    public function confirmOrder(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $sessionOrders = session('orders');
+
+            if (!$sessionOrders || count($sessionOrders) === 0) {
+                throw new \Exception('No orders in session');
+            }
+
+            $totalAmount = collect($sessionOrders)->sum('total_price');
+
+            $orderId = DB::table('orders')->insertGetId([
+                'client_id'      => $request->client_id,
+                'payment_method' => $request->payment_method,
+                'payment_due'    => $request->payment_due,
+                'payment_status' => $request->payment_status,
+                'grand_total'    => $totalAmount,
+                'created_at'     => now(),
+                'updated_at'     => now(),
+            ]);
+
+            foreach ($sessionOrders as $item) {
+                DB::table('order_items')->insert([
+                    'sales_order_id' => $orderId,
+                    'product_id'     => $item['product_id'],
+                    'quantity'       => $item['quantity'],
+                    'width'          => $item['width'],
+                    'height'         => $item['height'],
+                    'rate_per_unit'  => $item['rate_per_unit'],
+                    'total_price'    => $item['total_price'],
+                    'created_at'     => now(),
+                    'updated_at'     => now(),
+                ]);
+            }
+
+            session()->forget('orders');
+
+            DB::commit();
+            return back()->with([
+                'sessionOrders' => []
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e->getMessage()); 
+        }
     }
 }

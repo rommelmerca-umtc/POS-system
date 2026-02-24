@@ -159,7 +159,7 @@
                         <thead
                             class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 text-center">
                             <tr>
-                                <th scope="col" class="px-4 py-3">Order Number</th>
+                                <th scope="col" class="px-4 py-3">Order ID</th>
                                 <th scope="col" class="px-4 py-3">Client Name</th>
                                 <th scope="col" class="px-4 py-3">Grand Total (Net)</th>
                                 <th scope="col" class="px-4 py-3">Order Date</th>
@@ -171,28 +171,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr :key="index" class="border-b dark:border-gray-700 text-center">
+                            <tr v-for="(order, index) in orders.data" :key="index" class="border-b dark:border-gray-700 text-center">
                                 <th scope="row"
-                                    class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-
+                                    class="px-4 py-3 text-md font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {{ order.id }}
                                 </th>
                                 <th scope="row"
-                                    class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-
+                                    class="px-4 py-3 text-md font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {{ order.client_name }}
                                 </th>
                                 <th scope="row"
-                                    class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-
+                                    class="px-4 py-3 text-md font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    ₱{{ order.grand_total }}
                                 </th>
                                 <th scope="row"
-                                    class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-
+                                    class="px-4 py-3 text-md font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {{ order.created_at }}
                                 </th>
                                 <td class="px-4 py-3">
-                                    <span v-if="'PAID'"
-                                        class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
-                                        title="PAID (Finished and Paid)">
-
+                                    <span v-if="order.payment_status === 'pending'"
+                                        class="bg-green-100 text-green-800 text-md font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+                                        title="Pending (Pending for Payment)">
+                                        {{ order.payment_status }}
                                     </span>
                                     <span v-else-if="'BILLED'"
                                         class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
@@ -266,244 +266,70 @@
 </template>
 
 <script setup>
-import { router, usePage, Link } from '@inertiajs/vue3';
-import { ref, onMounted, reactive, computed, watch } from 'vue';
+    import { router, usePage, Link } from '@inertiajs/vue3';
+    import { ref, onMounted, reactive, computed, watch } from 'vue';
 
-const props = defineProps({
-    salesReports: {
-        type: Object,
-        required: true,
-    },
-});
+    const props = defineProps({
+        orders: {
+            type: Object,
+            required: true,
+        },
+    });
 
-onMounted(() => {
-    const currentRoute = usePage().url;
-    const hasQueryParams = currentRoute.includes('?');
+    onMounted(() => {
+        const currentRoute   = usePage().url;
+        const hasQueryParams = currentRoute.includes('?');
 
-    if (hasQueryParams) {
-        router.visit(currentRoute.split('?')[0], {
-            method: 'get',
-            data: {},
-            preserveState: false,
-            replace: true,
-        });
-    }
-});
+        if (hasQueryParams) {
+            router.visit(currentRoute.split('?')[0], {
+                method: 'get',
+                data: {},
+                preserveState: false,
+                replace: true,
+            });
+        }
+    });
+  
+    const startDate        = ref('');
+    const endDate          = ref('');
+    const isLoading        = ref(false);
+    const searchQuery      = ref('');
+    const dialogVisible    = ref(false);
+    const reportDetails    = ref([]);
+    const selectedStatuses = ref({
+        PAID: false,
+        BILLED: false,
+        VOIDED: false,
+    });
 
-const selectedBranches = ref([]);
-const startDate = ref('');
-const endDate = ref('');
-const isLoading = ref(false);
-const searchQuery = ref('');
-const dialogVisible = ref(false);
-const reportDetails = ref([]);
-const selectedStatuses = ref({
-    PAID: false,
-    BILLED: false,
-    VOIDED: false,
-});
+    // const fetchPage = (page) => {
+    //     const activeStatuses = Object.keys(selectedStatuses.value).filter(status => selectedStatuses.value[status]);
 
-// const totals = computed(() => {
-//     const subTotal      = props.salesReports.data.reduce((sum, report) => sum + report.sub_total, 0);
-//     const discountTotal = props.salesReports.data.reduce((sum, report) => sum + report.discount_total, 0);
-//     const grandTotal    = props.salesReports.data.reduce((sum, report) => sum + report.grand_total, 0);
+    //     if (!page) return;
+    //     router.visit(route('admin.sales-reports.index'), {
+    //         method: 'get',
+    //         data: {
+    //             page,
+    //             branch_ids: selectedBranches.value.length > 0 ? selectedBranches.value : null,
+    //             sales_status: activeStatuses.length > 0 ? activeStatuses : null,
+    //             start_date: startDate.value || null,
+    //             end_date: endDate.value || null,
+    //             search: searchQuery.value || '',
+    //         },
+    //         preserveState: true,
+    //         replace: true
+    //     });
+    // };
 
-//     return { subTotal, discountTotal, grandTotal };
-// });
+    // const openDetailsModal = (report) => {
+    //     dialogVisible.value = true;
+    //     isLoading.value     = true;
+    //     reportDetails.value = report;
+    // };
 
-// const handleFilters = () => {
-//     if (isLoading.value) return;
-
-//     isLoading.value      = true;
-//     const activeStatuses = Object.keys(selectedStatuses.value).filter(status => selectedStatuses.value[status]);
-
-//     if (selectedBranches.value.length < 1 && activeStatuses.length < 1 && startDate.value == '' && endDate.value == '') {
-//         isLoading.value = false;
-//         Swal.fire({
-//             toast: true,
-//             icon: "warning",
-//             position: "top-end",
-//             showConfirmButton: false,
-//             timer: 3000,
-//             title: "Please select a filter first",
-//         });
-//         return;
-//     }
-
-//     if ((startDate.value && !endDate.value) || (!startDate.value && endDate.value)) {
-//         isLoading.value = false;
-//         Swal.fire({
-//             toast: true,
-//             icon: "warning",
-//             position: "top-end",
-//             showConfirmButton: false,
-//             timer: 3000,
-//             title: "Please fill both Start Date and End Date.",
-//         });
-//         return;
-//     }
-
-//     if (startDate.value && endDate.value) {
-//         const start      = new Date(startDate.value);
-//         const end        = new Date(endDate.value);
-//         const diffInDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
-
-//         if (diffInDays > 31) {
-//             isLoading.value = false;
-//             Swal.fire({
-//                 toast: true,
-//                 icon: "warning",
-//                 position: "top-end",
-//                 showConfirmButton: false,
-//                 timer: 3000,
-//                 title: "Date range should not exceed 31 days.",
-//             });
-//             return;
-//         }
-//     }
-
-//     router.visit(route('admin.sales-reports.index'), {
-//         method: 'get',
-//         data: {
-//             branch_ids: selectedBranches.value.length > 0 ? selectedBranches.value : null,
-//             sales_status: activeStatuses.length > 0 ? activeStatuses : null,
-//             start_date: startDate.value || null,
-//             end_date: endDate.value || null,
-//             search: searchQuery.value || '',
-//         },
-//         preserveState: true,
-//         replace: true,
-//         onSuccess: () => {
-//             isLoading.value = false;
-//         },
-//         onFinish: () => {
-//             isLoading.value = false;
-//         },
-//     });
-// };
-
-// const handleSearch = () => {
-//     if (isLoading.value) return;
-
-//     isLoading.value      = true;
-//     const activeStatuses = Object.keys(selectedStatuses.value).filter(status => selectedStatuses.value[status]);
-
-//     if (searchQuery.value == '') {
-//         isLoading.value = false;
-//         Swal.fire({
-//             toast: true,
-//             icon: "warning",
-//             position: "top-end",
-//             showConfirmButton: false,
-//             timer: 3000,
-//             title: "Please input your prompt on the search box first.",
-//         });
-//         return;
-//     }
-
-//     router.visit(route('admin.sales-reports.index'), {
-//         method: 'get',
-//         data: {
-//             branch_ids: selectedBranches.value.length > 0 ? selectedBranches.value : null,
-//             sales_status: activeStatuses.length > 0 ? activeStatuses : null,
-//             start_date: startDate.value || null,
-//             end_date: endDate.value || null,
-//             search: searchQuery.value,
-//         },
-//         preserveState: true,
-//         replace: true,
-//         onSuccess: () => {
-//             isLoading.value = false;
-//         },
-//         onFinish: () => {
-//             isLoading.value = false;
-//         },
-//     });
-// };
-
-// function refresh() {
-//     if (isLoading.value) return;
-
-//     isLoading.value        = true;
-//     selectedBranches.value = [];
-//     selectedStatuses.value = { PAID: false, BILLED: false, VOIDED: false };
-//     startDate.value        = '';
-//     endDate.value          = '';
-//     searchQuery.value      = '';
-
-//     router.visit(route('admin.sales-reports.index'), {
-//         method: 'get',
-//         data: {
-//         },
-//         preserveState: true,
-//         replace: true,
-//         onSuccess: () => {
-//             isLoading.value = false;
-//             Swal.fire({
-//                 toast: true,
-//                 icon: "success",
-//                 position: "top-end",
-//                 showConfirmButton: false,
-//                 timer: 3000,
-//                 title: "Data refreshed!",
-//             });
-//         },
-//         onFinish: () => {
-//             isLoading.value = false;
-//         },
-//     });
-// }
-
-// function formatNumber(value) {
-//     if (value === null || value === undefined || isNaN(value)) {
-//         return '₱0.00';
-//     }
-//     return new Intl.NumberFormat('en-US', {
-//         style: 'currency',
-//         currency: 'PHP',
-//         minimumFractionDigits: 2,
-//         maximumFractionDigits: 2,
-//     }).format(value);
-// };
-
-// const getPageFromUrl = (url) => {
-//     try {
-//         const parsedUrl = new window.URL(url);
-//         return parsedUrl.searchParams.get('page');
-//     } catch (error) {
-//         console.error('Invalid URL:', url);
-//         return null;
-//     }
-// };
-
-// const fetchPage = (page) => {
-//     const activeStatuses = Object.keys(selectedStatuses.value).filter(status => selectedStatuses.value[status]);
-
-//     if (!page) return;
-//     router.visit(route('admin.sales-reports.index'), {
-//         method: 'get',
-//         data: {
-//             page,
-//             branch_ids: selectedBranches.value.length > 0 ? selectedBranches.value : null,
-//             sales_status: activeStatuses.length > 0 ? activeStatuses : null,
-//             start_date: startDate.value || null,
-//             end_date: endDate.value || null,
-//             search: searchQuery.value || '',
-//         },
-//         preserveState: true,
-//         replace: true
-//     });
-// };
-
-// const openDetailsModal = (report) => {
-//     dialogVisible.value = true;
-//     isLoading.value     = true;
-//     reportDetails.value = report;
-// };
-
-// const handleClose = async () => {
-//     dialogVisible.value  = false;
-//     isLoading.value      = false;
-//     reportDetails        = [];
-// };
+    // const handleClose = async () => {
+    //     dialogVisible.value  = false;
+    //     isLoading.value      = false;
+    //     reportDetails        = [];
+    // };
 </script>
