@@ -133,9 +133,31 @@
                                 </div>
                                 <dl
                                     class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
-                                    <dt class="text-base font-bold text-gray-900 dark:text-white">Total</dt>
+                                    <dt class="text-base font-bold text-gray-500 dark:text-white">Original Price</dt>
                                     <dd class="text-base font-bold text-gray-900 dark:text-white">₱{{ formatCurrency(totalAmount) }}</dd>
                                 </dl>
+                                <dl
+                                    class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
+                                    <dt class="text-base font-bold text-gray-500 dark:text-white">VAT (Value Added Tax 12%)</dt>
+                                    <dd class="text-base font-bold text-gray-900 dark:text-white">₱{{ formatCurrency(valueAddedTax) }}</dd>
+                                </dl>
+                                <dl
+                                    class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
+                                    <dt class="text-base font-bold text-gray-900 dark:text-white">Final Amount to be Paid</dt>
+                                    <dd class="text-lg font-bold text-green-700 dark:text-white">₱{{ formatCurrency(totalAmount + valueAddedTax) }}</dd>
+                                </dl>
+                            </div>
+                            <div class="flex justify-end">
+                                <label
+                                    class="mt-5 hover:shadow-xl transition duration-150 ease-in-out hover:shadow-blue-200 w-60 inline-flex cursor-pointer p-4 bg-neutral-primary-soft rounded-lg border border-default rounded-base shadow-xs">
+                                    <input type="checkbox" name="service_charge" class="sr-only peer" v-model="isServiceCharged">
+                                    <div
+                                        class="shrink-0 relative w-9 h-5 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-brand-soft dark:peer-focus:ring-brand-soft rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-buffer after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-500">
+                                    </div>
+                                    <div class="ms-5 select-none">
+                                        <p class="text-sm font-medium text-heading mb-1">Apply Service Charge?</p>
+                                    </div>
+                                </label>
                             </div>
                         </div>
                         <div
@@ -398,6 +420,8 @@
     const selectedPayment         = ref('')
     const paymentDue              = ref('')
     const paymentStatus           = ref('')
+    const valueAddedTax           = computed(() => totalAmount.value * 0.12)
+    const isServiceCharged        = ref(false)
 
     const handleCreateOrderForm = () => {
         createOrderFormVisible.value = true;
@@ -553,7 +577,8 @@
             client_id: selectedClient.value.client_id,
             payment_method: selectedPayment.value,
             payment_due: paymentDue.value,
-            payment_status: paymentStatus.value
+            payment_status: paymentStatus.value,
+            is_service_charged: isServiceCharged.value
         }, {
             preserveScroll: true,
             onSuccess: () => {

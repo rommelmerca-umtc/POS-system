@@ -185,24 +185,31 @@ class OrdersController extends Controller
     {
         DB::beginTransaction();
         try {
-            $sessionOrders = session('orders');
+           $sessionOrders = session('orders');
 
-            if (!$sessionOrders || count($sessionOrders) === 0) {
+            if (empty($sessionOrders)) {
                 throw new \Exception('No orders in session');
             }
 
-            $totalAmount = collect($sessionOrders)->sum('total_price');
+            $totalAmount        = collect($sessionOrders)->sum('total_price');
+            $vatRate            = 0.12;
+            $serviceChargeRate  = 0.05;
+            $vat                 = $totalAmount * $vatRate;
+            $serviceCharge       = $request->is_service_charged ? ($totalAmount + $vat) * $serviceChargeRate : 0;
+            $finalAmount         = $totalAmount + $vat + $serviceCharge;
 
             $orderId = DB::table('orders')->insertGetId([
                 'client_id'      => $request->client_id,
                 'payment_method' => $request->payment_method,
                 'payment_due'    => $request->payment_due,
                 'payment_status' => $request->payment_status,
-                'grand_total'    => $totalAmount,
+                'sub_total'      => $totalAmount,
+                'grand_total'    => $finalAmount,
+                'vat'            => $vat,
+                'service_charge' => $serviceCharge,
                 'created_at'     => now(),
                 'updated_at'     => now(),
             ]);
-
             foreach ($sessionOrders as $item) {
                 DB::table('order_items')->insert([
                     'sales_order_id' => $orderId,

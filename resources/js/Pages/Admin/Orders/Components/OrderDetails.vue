@@ -20,7 +20,7 @@
             <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white text-center">
                 Order Details
             </h5>
-            <div class="flow-root">
+            <div class="flow-root" id="printable-receipt">
                 <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-500">
                     <li class="py-2 sm:py-2">
                         <p class="text-sm font-medium text-gray-900 truncate dark:text-white mt-2 text-center">
@@ -148,20 +148,26 @@
                                 <span>{{ item.name }}</span>
                                 <span>x{{ item.quantity }}</span>
                             </div>
-
                             <div class="flex justify-between">
                                 <span>Size</span>
                                 <span>{{ item.width }} x {{ item.height }}</span>
                             </div>
-
-                            <div class="flex justify-between text-sm text-gray-500">
+                            <div class="flex justify-between">
+                                <span>Rate/unit</span>
                                 <span>{{ formatNumber(item.rate_per_unit) }}</span>
+                            </div>
+                            <div class="flex justify-between text-sm text-gray-500">
+                                <span>Item Price</span>
                                 <span>{{ formatNumber(item.total_price) }}</span>
                             </div>
                         </div>
                     </li>
                 </ul>
             </div>
+            <a v-if="orderDetails.payment_status === 'paid'" href="#" @click.prevent="print()"
+                class="flex items-center justify-center space-x-2 mt-3 py-3 px-2 text-lg bg-purple-800 rounded-lg text-center text-white hover:shadow-xl transition duration-150 ease-in-out hover:bg-purple-600 dark:hover:bg-purple-600 dark:text-purple-200 dark:hover:text-white focus:ring-4 focus:ring-purple-300 dark:focus:ring-purple-700 focus:outline-none">
+                <span>Print as Receipt</span>
+            </a>
         </div>
     </el-dialog>
 </template>
@@ -197,6 +203,16 @@
             maximumFractionDigits: 2,
         }).format(value);
     };
+
+    function print() {
+        const printContents     = document.getElementById('printable-receipt').innerHTML;
+        const originalContents  = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+
+        window.print();
+        document.body.innerHTML = originalContents;
+        window.location.reload();
+    }
 </script>
 
 <style scoped>
@@ -214,6 +230,24 @@
     @media (max-width: 480px) {
         .responsive-dialog {
             width: 100%; /* Full width on very small screens */
+        }
+    }
+
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+
+        #printable-receipt,
+        #printable-receipt * {
+            visibility: visible;
+        }
+
+        #printable-receipt {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
         }
     }
 </style>
