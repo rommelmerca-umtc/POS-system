@@ -32,7 +32,8 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     Route::post('/create-client', [OrdersController::class, 'createClient'])->name('admin.orders.client-create');
     Route::get('/search-client', [OrdersController::class, 'searchClient'])->name('admin.orders.search-client');
     Route::post('/confirm-order', [OrdersController::class, 'confirmOrder'])->name('admin.orders.confirm-order');
-    Route::get('/admin/orders/{id}', [OrdersController::class, 'getOrderDetails']) ->name('admin.orders.details');
+    Route::get('/orders/{id}', [OrdersController::class, 'getOrderDetails']) ->name('admin.orders.details');
+    Route::post('/clear-orders', [OrdersController::class, 'clearSessionOrders']) ->name('admin.orders.clear-orders');
 
     // Admin Branches Routes
     Route::get('/branches', [BranchesController::class, 'index'])->name('admin.branches.index');

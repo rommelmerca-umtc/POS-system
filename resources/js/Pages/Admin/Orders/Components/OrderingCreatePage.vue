@@ -5,25 +5,65 @@
                 <div
                     class="mt-4 shadow-lg shadow-blue-500/20 rounded-lg flex flex-row md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4 bg-white border border-blue-200">
                     <h6 class="text-xl font-extrabold text-blue-900 dark:text-white flex items-center gap-2">
-                        <span class="text-gray-400 text-sm flex items-center gap-1">
+                        <Link :href="route('admin.orders.index')" class="text-gray-400 text-sm flex items-center gap-1 hover:text-blue-500 transition-all ease-in-out duration-200">
                             Orders
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="h-4 w-4">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                             </svg>
-                        </span>
+                        </Link>
 
                         <span>Create Order</span>
                     </h6>
-                    <button type="button" @click="handleCreateOrderForm()"
-                        class="flex items-center justify-center space-x-2 text-white bg-blue-900 hover:shadow-xl transition duration-150 ease-in-out hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-500 focus:outline-none dark:focus:ring-blue-800">
-                        <span>Create</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-5 h-5 font-extrabold">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Zm9.75-9.75H18a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 18 3.75h-2.25A2.25 2.25 0 0 0 13.5 6v2.25a2.25 2.25 0 0 0 2.25 2.25Z" />
-                        </svg>
-                    </button>
+                    <div v-if="orders.length > 0" class="grid gap-4 mb-4 sm:grid-cols-3">
+                        <Link :href="route('admin.orders.index')"
+                            class="flex items-center justify-center space-x-2 text-white bg-green-500 hover:shadow-xl transition duration-150 ease-in-out hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-green-600 dark:hover:bg-green-500 focus:outline-none dark:focus:ring-green-800">
+                            <span>Home</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-5 h-5 font-extrabold">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                            </svg>
+                        </Link>
+                        <button type="button" @click="clearOrders()"
+                            class="flex items-center justify-center space-x-2 text-white bg-orange-500 hover:shadow-xl transition duration-150 ease-in-out hover:bg-orange-600 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-orange-600 dark:hover:bg-orange-500 focus:outline-none dark:focus:ring-orange-800">
+                            <span>Clear</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-5 h-5 font-extrabold">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                            </svg>
+                        </button>
+                        <button type="button" @click="handleCreateOrderForm()"
+                            class="flex items-center justify-center space-x-2 text-white bg-blue-900 hover:shadow-xl transition duration-150 ease-in-out hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-500 focus:outline-none dark:focus:ring-blue-800">
+                            <span>Create</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-5 h-5 font-extrabold">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Zm9.75-9.75H18a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 18 3.75h-2.25A2.25 2.25 0 0 0 13.5 6v2.25a2.25 2.25 0 0 0 2.25 2.25Z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div v-else class="grid gap-4 mb-4 sm:grid-cols-2">
+                        <Link :href="route('admin.orders.index')"
+                            class="flex items-center justify-center space-x-2 text-white bg-green-500 hover:shadow-xl transition duration-150 ease-in-out hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-green-600 dark:hover:bg-green-500 focus:outline-none dark:focus:ring-green-800">
+                            <span>Home</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-5 h-5 font-extrabold">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                            </svg>
+                        </Link>
+                        <button type="button" @click="handleCreateOrderForm()"
+                            class="flex items-center justify-center space-x-2 text-white bg-blue-900 hover:shadow-xl transition duration-150 ease-in-out hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-500 focus:outline-none dark:focus:ring-blue-800">
+                            <span>Create</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-5 h-5 font-extrabold">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Zm9.75-9.75H18a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 18 3.75h-2.25A2.25 2.25 0 0 0 13.5 6v2.25a2.25 2.25 0 0 0 2.25 2.25Z" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
@@ -114,7 +154,7 @@
                         </div>
                     </div>
 
-                    <div class="mx-auto mt-6 max-w-5xl flex-1 space-y-6 lg:mt-0 lg:w-full shadow-lg shadow-blue-500/20 rounded-lg border border-blue-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800 sm:p-6 lg:p-8">
+                    <div v-if="orders.length > 0" class="mx-auto mt-6 max-w-5xl flex-1 space-y-6 lg:mt-0 lg:w-full shadow-lg shadow-blue-500/20 rounded-lg border border-blue-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800 sm:p-6 lg:p-8">
                         <div
                             class="space-y-4 rounded-lg border border-blue-200 bg-white p-4 shadow-lg shadow-blue-500/20 dark:border-gray-700 dark:bg-gray-800 sm:p-6">
                             <p class="text-xl font-semibold text-gray-900 dark:text-white">
@@ -147,7 +187,7 @@
                                     <dd class="text-lg font-bold text-green-700 dark:text-white">₱{{ formatCurrency(totalAmount + valueAddedTax) }}</dd>
                                 </dl>
                             </div>
-                            <div class="flex justify-end">
+                            <div class="flex justify-start">
                                 <label
                                     class="mt-5 hover:shadow-xl transition duration-150 ease-in-out hover:shadow-blue-200 w-60 inline-flex cursor-pointer p-4 bg-neutral-primary-soft rounded-lg border border-default rounded-base shadow-xs">
                                     <input type="checkbox" name="service_charge" class="sr-only peer" v-model="isServiceCharged">
@@ -401,8 +441,8 @@
     import { initFlowbite } from 'flowbite';
     import AdminLayout from '../../Components/AdminLayout.vue';
     import CreateOrderForm from './CreateOrderForm.vue';
-    import { usePage, router } from '@inertiajs/vue3';
-    import CreateClientForm from './CreateClientForm.vue'
+    import { usePage, router, Link } from '@inertiajs/vue3';
+    import CreateClientForm from './CreateClientForm.vue';
     
     onMounted(() => {
         initFlowbite();
@@ -611,4 +651,38 @@
             }
         });
     }
+
+    const clearOrders = () => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, clear it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                router.post(route('admin.orders.clear-orders'), {}, {
+                    preserveScroll: true,
+                    preserveState: false,
+                    onSuccess: (page) => {
+                        orders.value = page.props.sessionOrders || [];
+                        Swal.fire({
+                            title: "Cleared!",
+                            text: "Orders have been cleared!",
+                            icon: "success"
+                        });
+                    },
+                    onError: () => {
+                        Swal.fire({
+                            title: "Error!",
+                            text: "Failed to clear orders.",
+                            icon: "error"
+                        });
+                    }
+                });
+            }
+        });
+    };
 </script>

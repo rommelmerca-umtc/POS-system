@@ -275,4 +275,13 @@ class OrdersController extends Controller
             'items' => $orderItems
         ]);
     }
+
+    public function clearSessionOrders()
+    {
+        session()->forget('orders');
+        
+        return redirect()->back()->with([
+            'sessionOrders' => session('orders', [])
+        ]);
+    }
 }
