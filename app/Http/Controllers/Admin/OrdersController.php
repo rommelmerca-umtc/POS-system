@@ -134,13 +134,39 @@ class OrdersController extends Controller
 
     public function createClient(Request $request)
     {
+        $validated = $request->validate([
+            'client_firstname'     => 'required|string|min:2|max:50',
+            'client_lastname'      => 'required|string|min:2|max:50',
+            'client_mobile_number' => [
+                                        'required',
+                                        'string',
+                                        'regex:/^(09|\+639)\d{9}$/',
+                                        'unique:clients,phone_number'
+                                    ],
+            'client_email'         => 'required|email|unique:clients,email',
+            'client_address'       => 'required|string|min:5|max:255',
+        ], [
+            'client_firstname.required'     => 'The first name field is required.',
+            'client_firstname.min'          => 'First name must be at least 2 characters.',
+            'client_lastname.required'      => 'The last name field is required.',
+            'client_lastname.min'           => 'Last name must be at least 2 characters.',
+            'client_mobile_number.required' => 'The mobile number field is required.',
+            'client_mobile_number.regex'    => 'Please enter a valid Philippine mobile number (e.g., 09123456789 or +639123456789).',
+            'client_mobile_number.unique'   => 'This mobile number is already registered.',
+            'client_email.required'         => 'The email field is required.',
+            'client_email.email'            => 'Please enter a valid email address.',
+            'client_email.unique'           => 'This email is already registered.',
+            'client_address.required'       => 'The address field is required.',
+            'client_address.min'            => 'Address must be at least 5 characters.',
+        ]);
+
         $createdClient = Client::create([
-            'client_id'    => 'CL-' . Str::upper(Str::random(6)),
-            'first_name'   => $request->client_firstname,
-            'last_name'    => $request->client_lastname,
-            'email'        => $request->client_email,
-            'phone_number' => $request->client_mobile_number,
-            'address'      => $request->client_address
+            'client_id'    => 'CL-' . strtoupper(Str::random(6)),
+            'first_name'   => $validated['client_firstname'],
+            'last_name'    => $validated['client_lastname'],
+            'email'        => $validated['client_email'],
+            'phone_number' => $validated['client_mobile_number'],
+            'address'      => $validated['client_address']
         ]);
 
         return redirect()->back()->with('createdClient', $createdClient);
@@ -153,32 +179,35 @@ class OrdersController extends Controller
         ]);
     }
 
-    public function searchClient(Request $request) 
+    public function searchClient(Request $request)
     {
-        $searchedClient = DB::table('clients as c')
-                        ->select([
-                            'c.client_id',
-                            'c.first_name',
-                            'c.last_name',
-                            'c.email',
-                            'c.phone_number',
-                            'c.address',
-                        ])->when($request->search, function ($query) use ($request) {
-                            $search = $request->search;
-                            $query->where(function ($q) use ($search) {
-                                $q->where('c.client_id', 'like', "%$search%")
-                                ->orWhere('c.first_name', 'like', "%$search%")
-                                ->orWhere('c.last_name', 'like', "%$search%")
-                                ->orWhere('c.email', 'like', "%$search%")
-                                ->orWhere('c.phone_number', 'like', "%$search%")
-                                ->orWhere('c.address', 'like', "%$search%");
-                            });
-                        })
-                        ->first();
-
-        return redirect()->back()->with([
-            'searchedClient' => $searchedClient
-        ]);
+        $search = $request->get('q');
+        
+        $clients = DB::table('clients as c')
+            ->select([
+                'c.client_id',
+                'c.first_name',
+                'c.last_name',
+                'c.email',
+                'c.phone_number',
+                'c.address',
+                DB::raw("CONCAT(c.first_name, ' ', c.last_name) as full_name")
+            ])
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('c.client_id', 'like', "%{$search}%")
+                    ->orWhere('c.first_name', 'like', "%{$search}%")
+                    ->orWhere('c.last_name', 'like', "%{$search}%")
+                    ->orWhere('c.email', 'like', "%{$search}%")
+                    ->orWhere('c.phone_number', 'like', "%{$search}%")
+                    ->orWhere('c.address', 'like', "%{$search}%")
+                    ->orWhere(DB::raw("CONCAT(c.first_name, ' ', c.last_name)"), 'like', "%{$search}%");
+                });
+            })
+            ->limit(10)
+            ->get();
+        
+        return response()->json($clients);
     }
 
     public function confirmOrder(Request $request)
@@ -283,5 +312,12 @@ class OrdersController extends Controller
         return redirect()->back()->with([
             'sessionOrders' => session('orders', [])
         ]);
+    }
+
+    public function cancelSessionOrders()
+    {
+        session()->forget('orders');
+        
+        return redirect()->route('admin.orders.index');
     }
 }
