@@ -15,10 +15,6 @@ use Inertia\Inertia;
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
 
-// Route::middleware(['auth', 'isUser'])->prefix('user')->group(function () {
-//     Route::get('/dashboard', [DashboardController::class, 'index'])->name('user.dashboard.index');
-// });
-
 Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     // Admin Dashboard Routes
     Route::get('/dashboard', [DashboardController::class, 'dashboardPage'])->name('admin.dashboard.index');
@@ -35,11 +31,7 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     Route::get('/orders/details/{id}', [OrdersController::class, 'getOrderDetails']) ->name('admin.orders.details');
     Route::post('/orders/clear', [OrdersController::class, 'clearSessionOrders']) ->name('admin.orders.clear-orders');
     Route::post('/orders/cancel', [OrdersController::class, 'cancelSessionOrders'])->name('admin.orders.cancel-orders');
-    Route::get('/orders/update-page/{orderId}', [OrdersController::class, 'showUpdateOrderPage'])->name('admin.orders.update-page');
-    Route::put('/orders/update/{orderId}', [OrdersController::class, 'updateOrder'])->name('admin.orders.update');
-    Route::patch('/orders/update-item/{itemId}', [OrdersController::class, 'updateOrderItem'])->name('admin.orders.update-item');
-    Route::delete('/orders/remove-item/{itemId}', [OrdersController::class, 'removeOrderedItem'])->name('admin.orders.remove-item');
-    Route::post('/orders/add-item/{orderId}', [OrdersController::class, 'addOrderItem'])->name('admin.orders.add-item');
+    Route::delete('/orders/{order}', [OrdersController::class, 'deleteOrder'])->name('admin.orders.destroy');
 
     // Admin Branches Routes
     Route::get('/branches', [BranchesController::class, 'index'])->name('admin.branches.index');
