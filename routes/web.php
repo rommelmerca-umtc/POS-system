@@ -24,17 +24,22 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'dashboardPage'])->name('admin.dashboard.index');
     
     // Orders Routes
-    Route::get('/orders', [OrdersController::class, 'ordersPage'])->name('admin.orders.index');
-    Route::get('/create-order-page', [OrdersController::class, 'createOrderPage'])->name('admin.orders.create-order-page');
-    Route::post('/create-order', [OrdersController::class, 'createOrder'])->name('admin.orders.create-order');
-    Route::post('/update-order/{order_id}', [OrdersController::class, 'updateOrder'])->name('admin.orders.update');
-    Route::delete('/remove-order/{order_id}', [OrdersController::class, 'removeOrder'])->name('admin.orders.remove-order');
-    Route::post('/create-client', [OrdersController::class, 'createClient'])->name('admin.orders.client-create');
-    Route::get('/search-client', [OrdersController::class, 'searchClient'])->name('admin.orders.search-client');
-    Route::post('/confirm-order', [OrdersController::class, 'confirmOrder'])->name('admin.orders.confirm-order');
-    Route::get('/orders/{id}', [OrdersController::class, 'getOrderDetails']) ->name('admin.orders.details');
-    Route::post('/clear-orders', [OrdersController::class, 'clearSessionOrders']) ->name('admin.orders.clear-orders');
-    Route::post('/cancel-orders', [OrdersController::class, 'cancelSessionOrders']) ->name('admin.orders.cancel-orders');
+    Route::get('/orders', [OrdersController::class, 'showOrdersPage'])->name('admin.orders.index');
+    Route::get('/orders/create-page', [OrdersController::class, 'showCreateOrderPage'])->name('admin.orders.create-order-page');
+    Route::post('/orders/create', [OrdersController::class, 'createOrder'])->name('admin.orders.create-order');
+    Route::post('/orders/update-quantity/{order_id}', [OrdersController::class, 'updateOrderItemQuantity'])->name('admin.orders.update-orders-quantity');
+    Route::delete('/orders/item/remove/{order_id}', [OrdersController::class, 'removeOrderItem'])->name('admin.orders.remove-order');
+    Route::post('/orders/client/create', [OrdersController::class, 'createClient'])->name('admin.orders.client-create');
+    Route::get('/orders/client/search', [OrdersController::class, 'searchClient'])->name('admin.orders.search-client');
+    Route::post('/orders/confirm', [OrdersController::class, 'confirmOrder'])->name('admin.orders.confirm-order');
+    Route::get('/orders/details/{id}', [OrdersController::class, 'getOrderDetails']) ->name('admin.orders.details');
+    Route::post('/orders/clear', [OrdersController::class, 'clearSessionOrders']) ->name('admin.orders.clear-orders');
+    Route::post('/orders/cancel', [OrdersController::class, 'cancelSessionOrders'])->name('admin.orders.cancel-orders');
+    Route::get('/orders/update-page/{orderId}', [OrdersController::class, 'showUpdateOrderPage'])->name('admin.orders.update-page');
+    Route::put('/orders/update/{orderId}', [OrdersController::class, 'updateOrder'])->name('admin.orders.update');
+    Route::patch('/orders/update-item/{itemId}', [OrdersController::class, 'updateOrderItem'])->name('admin.orders.update-item');
+    Route::delete('/orders/remove-item/{itemId}', [OrdersController::class, 'removeOrderedItem'])->name('admin.orders.remove-item');
+    Route::post('/orders/add-item/{orderId}', [OrdersController::class, 'addOrderItem'])->name('admin.orders.add-item');
 
     // Admin Branches Routes
     Route::get('/branches', [BranchesController::class, 'index'])->name('admin.branches.index');

@@ -530,7 +530,7 @@
     const updateQuantity = (order, newQuantity) => {
         if (newQuantity < 1) return;
 
-        router.post(route('admin.orders.update', order.id), {
+        router.post(route('admin.orders.update-orders-quantity', order.id), {
             quantity: newQuantity,
         }, {
             preserveState: true,

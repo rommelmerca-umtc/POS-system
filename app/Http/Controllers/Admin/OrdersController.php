@@ -12,7 +12,7 @@ use App\Models\Clients\Client;
 
 class OrdersController extends Controller
 {
-    public function ordersPage(Request $request)
+    public function showOrdersPage(Request $request)
     {
         $ordersQuery = DB::table('orders as o')
                     ->leftJoin('clients as c', 'o.client_id', '=', 'c.client_id')
@@ -58,7 +58,7 @@ class OrdersController extends Controller
         ]);
     }
 
-    public function createOrderPage(Request $request)
+    public function showCreateOrderPage(Request $request)
     {
         $currentUser  = auth()->user();
         $products     = Product::all();
@@ -99,7 +99,7 @@ class OrdersController extends Controller
         return back(); 
     }
 
-    public function updateOrder(Request $request, $id)
+    public function updateOrderItemQuantity(Request $request, $id)
     {
         $request->validate([
             'quantity' => ['required', 'integer', 'min:1'],
@@ -124,7 +124,7 @@ class OrdersController extends Controller
         return back();
     }
 
-    public function removeOrder(Request $request, $id)
+    public function removeOrderItem(Request $request, $id)
     {
         $orders = session()->get('orders', []);
         $orders = array_filter($orders, fn($order) => $order['id'] !== $id);
@@ -319,5 +319,151 @@ class OrdersController extends Controller
         session()->forget('orders');
         
         return redirect()->route('admin.orders.index');
+    }
+
+    public function showUpdateOrderPage($orderId)
+    {
+        $order = DB::table('orders as o')
+            ->leftJoin('clients as c', 'o.client_id', '=', 'c.client_id')
+            ->select(
+                'o.id',
+                'o.client_id',
+                'o.payment_method',
+                'o.payment_status',
+                'o.payment_due',
+                'o.sub_total',
+                'o.vat',
+                'o.service_charge',
+                'o.grand_total',
+                DB::raw("CONCAT(c.first_name, ' ', c.last_name) as client_name")
+            )
+            ->where('o.id', $orderId)
+            ->first();
+
+        $items = DB::table('order_items as oi')
+            ->leftJoin('products as p', 'oi.product_id', '=', 'p.id')
+            ->select(
+                'oi.id',
+                'oi.product_id',
+                'p.name',
+                'oi.quantity',
+                'oi.width',
+                'oi.height',
+                'oi.rate_per_unit',
+                'oi.total_price'
+            )
+            ->where('oi.sales_order_id', $orderId)
+            ->get();
+
+        $products = Product::all();
+
+        return Inertia::render('Admin/Orders/Components/OrderingEditPage', [
+            'order'    => $order,
+            'items'    => $items,
+            'products' => $products
+        ]);
+    }
+
+    public function updateOrder(Request $request, $orderId)
+    {
+        DB::beginTransaction();
+        try {
+            $validated = $request->validate([
+                'payment_method' => 'required|string',
+                'payment_due' => 'nullable|date',
+                'payment_status' => 'required|string|in:pending,paid,cancelled,overdue',
+                'subtotal' => 'required|numeric',
+                'vat' => 'required|numeric',
+                'service_charge' => 'required|numeric',
+                'grand_total' => 'required|numeric'
+            ]);
+
+            DB::table('orders')
+                ->where('id', $orderId)
+                ->update([
+                    'payment_method' => $validated['payment_method'],
+                    'payment_due' => $validated['payment_due'],
+                    'payment_status' => $validated['payment_status'],
+                    'sub_total' => $validated['subtotal'],
+                    'vat' => $validated['vat'],
+                    'service_charge' => $validated['service_charge'],
+                    'grand_total' => $validated['grand_total'],
+                    'updated_at' => now()
+                ]);
+
+            DB::commit();
+            return back()->with('success', 'Order updated successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['error' => 'Failed to update order: ' . $e->getMessage()]);
+        }
+    }
+
+    public function updateOrderItem(Request $request, $itemId)
+    {
+        try {
+            $validated = $request->validate([
+                'quantity' => 'required|integer|min:1',
+                'total_price' => 'required|numeric'
+            ]);
+
+            DB::table('order_items')
+                ->where('id', $itemId)
+                ->update([
+                    'quantity' => $validated['quantity'],
+                    'total_price' => $validated['total_price'],
+                    'updated_at' => now()
+                ]);
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function removeOrderedItem($itemId)
+    {
+        try {
+            DB::table('order_items')
+                ->where('id', $itemId)
+                ->delete();
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function addOrderItem(Request $request, $orderId)
+    {
+        DB::beginTransaction();
+        try {
+            $validated = $request->validate([
+                'product_id' => 'required|integer|exists:products,id',
+                'width' => 'required|numeric|min:0',
+                'height' => 'required|numeric|min:0',
+                'quantity' => 'required|integer|min:1',
+                'rate_per_unit' => 'required|numeric|min:0',
+                'total_price' => 'required|numeric|min:0'
+            ]);
+
+            DB::table('order_items')->insert([
+                'sales_order_id' => $orderId,
+                'product_id' => $validated['product_id'],
+                'quantity' => $validated['quantity'],
+                'width' => $validated['width'],
+                'height' => $validated['height'],
+                'rate_per_unit' => $validated['rate_per_unit'],
+                'total_price' => $validated['total_price'],
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }
