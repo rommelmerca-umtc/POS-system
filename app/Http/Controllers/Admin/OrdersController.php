@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Products\Product;
 use Illuminate\Support\Str;
 use App\Models\Clients\Client;
+use App\Models\Orders\Order;
 
 class OrdersController extends Controller
 {
@@ -63,7 +64,7 @@ class OrdersController extends Controller
         $currentUser  = auth()->user();
         $products     = Product::all();
 
-        return Inertia::render('Admin/Orders/Components/OrderingCreatePage', [
+        return Inertia::render('Admin/Orders/Components/CreateOrderPage', [
             'currentUser'    => $currentUser,
             'products'       => $products,
             'sessionOrders'  => session()->get('orders', []),
@@ -336,5 +337,20 @@ class OrdersController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to delete order');
         }
+    }
+
+    public function updateOrderStatus(Request $request, $order)
+    {
+        $request->validate([
+            'payment_status' => 'required|string'
+        ]);
+
+        $order = Order::findOrFail($order);
+
+        $order->update([
+            'payment_status' => $request->payment_status
+        ]);
+
+        return redirect()->back()->with('success', 'Order status updated');
     }
 }

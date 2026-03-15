@@ -3,15 +3,12 @@
 use App\Http\Controllers\Admin\BranchesController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrdersController;
+use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\SalesReportsController;
 use App\Http\Controllers\Admin\StatisticsController;
 use App\Http\Controllers\Admin\TransactionsReportsController;
 use App\Http\Controllers\Home\HomeController;
-use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
 
@@ -32,6 +29,10 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     Route::post('/orders/clear', [OrdersController::class, 'clearSessionOrders']) ->name('admin.orders.clear-orders');
     Route::post('/orders/cancel', [OrdersController::class, 'cancelSessionOrders'])->name('admin.orders.cancel-orders');
     Route::delete('/orders/{order}', [OrdersController::class, 'deleteOrder'])->name('admin.orders.destroy');
+    Route::put('/admin/orders/{order}/update-status', [OrdersController::class, 'updateOrderStatus'])->name('admin.orders.update-status');
+
+    //Products Routes
+    Route::get('/products', [ProductsController::class, 'index'])->name('admin.products.index');
 
     // Admin Branches Routes
     Route::get('/branches', [BranchesController::class, 'index'])->name('admin.branches.index');

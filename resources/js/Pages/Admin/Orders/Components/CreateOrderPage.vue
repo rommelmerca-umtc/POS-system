@@ -626,7 +626,7 @@
         isDropdownOpen.value = true;
         
         try {
-            const response = await fetch(`/admin/search-client?q=${encodeURIComponent(searchQuery.value)}`);
+            const response = await fetch(`/admin/orders/client/search?q=${encodeURIComponent(searchQuery.value)}`);
             searchResults.value = await response.json();
         } catch (error) {
             console.error('Search failed:', error);
