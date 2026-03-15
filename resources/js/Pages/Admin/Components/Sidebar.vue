@@ -62,15 +62,15 @@
                             <Link :href="route('admin.products.index')"
                             :class="[
                                 'flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg duration-2000 group hover:text-blue-500 hover:border-blue-200 hover:shadow-sm hover:shadow-blue-500/50 transition-all dark:hover:bg-gray-700',
-                                route().current('admin.branches.index')
+                                route().current('admin.products.index')
                                     ? 'text-blue-500 border-blue-200 shadow-sm shadow-blue-500/50'
                                     : 'text-gray-900 dark:text-white'
                             ]">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="size-4">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
-                                </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="mr-2 size-4">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                            </svg>
                             Products
                             </Link>
                         </li>
@@ -137,7 +137,7 @@
     const isPagesActive =
         route().current('admin.orders.index') ||
         route().current('admin.orders.create-order-page') ||
-        route().current('admin.branches.index') ||
+        route().current('admin.products.index') ||
         route().current('admin.sales-reports.index') ||
         route().current('admin.transactions-reports.index');
 </script>
